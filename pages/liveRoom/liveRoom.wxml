@@ -1,0 +1,97 @@
+<!--pages/liveRoom/liveRoom.wxml-->
+  <view class='box' wx:if="{{isScroll}}" animation="{{animationData}}">
+  <view class='header'>
+    <view class='photo'>
+      <image src='{{anchorData.headurl}}'></image>
+    </view>
+    <view class='anchor'> 
+      <view class='message'>
+        <text class='name'>{{anchorData.nickname}}</text>
+        <text class='bg'>boogoo号: {{anchorData.idx}}</text>
+      </view>
+      <view class="button" bindtap='isFollowed' wx:if="{{anchorData.isfriend=='0'}}">关注</view>
+      <view class="button is-follow " bindtap='isFollowed' wx:else>已关注</view>
+    </view>  
+
+<!--操作-->
+<view class='operation' wx:if="{{isOperate}}">
+      <view class='operation-item' wx:for="{{operationArr}}" wx:key="idx" wx:for-index="idx" wx:for-item="itemName">
+        <view class='num' style='color:{{itemName.color}}'>{{itemName.num}}</view>
+        <text>{{itemName.title}}</text>
+      </view>
+    </view>
+  </view> 
+
+<!--直播信息-->
+<view class='message-title'>
+    <view class="title-one {{active=='0'?'active':''}}" bindtap='isClick' data-id='0'>主播信息</view>
+    <view class="title-two {{active=='1'?'active':''}}" bindtap='isClick' data-id='1'>她的星店</view>
+  </view>
+</view> 
+
+<view class='fixed-box' wx:else>
+  <view class='message-active'>
+    <view class='anchor-name'>
+      <image class='img' src='{{anchorData.headurl}}'></image>
+      <text class='nick'>{{anchorData.nickname}}</text>
+    </view>
+    <view class="button" bindtap='isFollowed' wx:if="{{anchorData.isfriend=='0'}}">关注</view>
+    <view class="button is-follow " bindtap='isFollowed' wx:else>已关注</view>
+  </view>
+
+    <view class='line'></view>
+    <view class='message-title'>
+    <view class="title-one {{active=='0'?'active':''}}" bindtap='isClick' data-id='0'>主播信息</view>
+    <view class="title-two {{active=='1'?'active':''}}" bindtap='isClick' data-id='1'>她的星店</view>
+  </view>
+</view>
+
+
+<!-- 主播信息-->
+<view class="module {{isSuper==true?'super':''}}" wx:if="{{active=='0'}}">
+  <view class='anchor-message'>
+    <!-- 限制10张图片 -->
+    <scroll-view class='show-photo' style='width:{{width}}px' scroll-x >
+      <view class='show-img'>
+      <block  wx:if="{{imglist.length >= 1}}">
+        <view class='anchor-photo' wx:for="{{imglist}}"  wx:for-item="item" wx:key="{{i}}" wx:for-index="i">
+           <image src='{{item}}' style='height:120rpx' mode='widthFix' bindtap='toPreview' data-src='{{item}}'></image> 
+        </view>
+      </block>
+      <block wx:else>
+         <view class='anchor-shadow'></view>   
+      </block>
+      </view>
+    </scroll-view>
+  </view>
+  <!-- 转录视频 -->
+  <view class='video'>
+    <view class='video-title'>
+      <view class='title'>录播视频</view>
+      <view class='nav' bindtap='toLiveRoom' wx:if="{{anchorData.livestate=='1'}}">进入直播间</view>
+    </view>
+    <view class='video-box'>
+      <view class='video-item' wx:for="{{videoArr}}" wx:for-item="newsItem" wx:for-index="in" wx:key="{{in}}" bindtap='toWatch' data-playaddress="{{newsItem.playaddress}}" data-videoid='{{newsItem.videoid}}' data-userid='{{newsItem.userid}}'>
+        <image src='{{newsItem.barcoverurl}}'></image>
+        <image src='{{playurl}}' class='layer'></image>
+        <text>{{newsItem.introduce}}</text>
+      </view>
+
+    </view>
+  </view>
+</view>
+
+<!-- 她的星店-->
+<view class="module {{isSuper==true?'super':''}}" wx:else>
+  <view class='star-store'>
+    <view class='star-item' bindtap='toJump' data-productid='{{good.productid}}' wx:for="{{goodArr}}" wx:for-item="good" wx:for-index="ind" wx:key="{{ind}}">
+      <view class='show-photo'>
+        <image src='{{good.coverurl}}'></image>
+      </view>
+      <view class='message'>
+        <view class='title'>{{good.name}}</view>
+        <text>{{good.price}}</text>
+      </view>
+    </view>
+  </view>
+</view>

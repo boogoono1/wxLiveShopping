@@ -1,0 +1,409 @@
+<!--pages/order/order.wxml-->
+<view class='header'>
+  <view class="item {{current==ind?'active':''}}" wx:for="{{titleArr}}" wx:for-item="item" wx:for-index="ind" wx:key="ind" data-id="{{ind}}" bindtap='isClick'>
+    {{item}}
+  </view>
+</view>
+
+<swiper bindchange="change" duration="{{duration}}" current='{{current}}' style='height:{{height}}px'>
+<swiper-item>
+<scroll-view scroll-y style='height:{{height}}px'>
+<!--全部内容-->
+<view class='container' style='height:{{height}}px' wx:if="{{current==0}}">
+  <view class='nullImage' wx:if='{{allLoading}}'>
+    加载中...
+  </view>
+  <view class='nullImage' hidden='{{noOrder1}}'>
+    <image src='{{unllImage}}' class='imageView' mode='aspectFit'></image>
+    <view class='no-text'>暂无订单消息</view>
+  </view>
+  <!--待付款-->
+  <view class='box' wx:for="{{nonPaymentArr}}" wx:for-index="q" wx:for-item="itemName">
+    <view class='header-title'>
+      <view class='intro'>
+        <view class='photo'>
+          <image src='{{itemName.headurl}}'></image>
+        </view>
+        <view class='nickname'>{{itemName.anchorname}}</view>
+      </view>
+      <text>待付款</text>
+    </view>
+
+    <view class='goods-message' wx:for="{{itemName.prolist}}" wx:for-index="w" wx:for-item="itemN" bindtap='toDetail' data-arr='{{[itemName.anchorid,itemN.productid,itemN.attrdesc]}}'>
+      <view class='img'>
+        <image src='{{itemN.coverurl}}'></image>
+      </view>
+      <view class='goodsName'>
+        {{itemN.name}}
+      </view>
+      <view class='price'>
+        <text>￥{{itemN.price}}</text>
+        <text>x{{itemN.num}}</text>
+      </view>
+    </view>
+
+    <view class='payment'>
+      <text class='goods-num'>共{{itemName.allNum}}件商品</text>
+      <text class='need'>需要付款:</text>
+      <text class='price'> ￥{{itemName.allPrice}}</text>
+      <!-- <text class='discounts'>(已优惠￥500.00)</text> -->
+    </view>
+    <view class='operation'>
+      <view class='remove' bindtap='removeOrder' data-id="{{itemName.orderid}}">删除订单</view>
+      <view class='pay' bindtap='pay' data-id='{{itemName.orderid}}'>立即支付</view>
+    </view>
+
+  </view>
+
+  <!--待发货-->
+  <view class='box ' wx:for="{{waitShipmentsArr}}" wx:for-index="r" wx:key="r" wx:for-item="waitShipments">
+    <view class='header-title'>
+      <view class='intro'>
+        <view class='photo'>
+          <image src='{{waitShipments.headurl}}'></image>
+        </view>
+        <view class='nickname'>{{waitShipments.anchorname}}</view>
+      </view>
+      <text>待发货</text>
+    </view>
+
+    <view class='goods-message' wx:for="{{waitShipments.prolist}}" bindtap='toDetail' data-arr='{{[waitShipments.anchorid,ws.productid,ws.attrdesc]}}' wx:for-index="t" wx:for-item="ws">
+      <view class='img'>
+        <image src='{{ws.coverurl}}'></image>
+      </view>
+      <view class='goodsName'>
+        {{ws.name}}
+      </view>
+      <view class='price'>
+        <text>￥{{ws.price}}</text>
+        <text>x{{ws.num}}</text>
+      </view>
+    </view>
+    <view class='payment'>
+      <text class='goods-num'>共{{waitShipments.allNum}}件商品</text>
+      <text class='need'>需要付款:</text>
+      <text class='price'> ￥{{waitShipments.allPrice}}</text>
+      <!-- <text class='discounts'>(已优惠￥500.00)</text> -->
+    </view>
+    <view class='operation'>
+      <view class='remind' bindtap='remind'>提醒发货</view>
+    </view>
+  </view>
+
+  <!--待收货-->
+
+  <view class='box ' wx:for="{{waitReceivingArr}}" wx:for-index='y' wx:key="{{y}}" wx:for-item="waitReceiving">
+    <view class='header-title'>
+      <view class='intro'>
+        <view class='photo'>
+          <image src='{{waitReceiving.headurl}}'></image>
+        </view>
+        <view class='nickname'>{{waitReceiving.anchorname}}</view>
+      </view>
+      <text>待收货</text>
+    </view>
+
+    <view class='goods-message' wx:for="{{waitReceiving.prolist}}" bindtap='toDetail' data-arr='{{[waitReceiving.anchorid,wr.productid,wr.attrdesc]}}' wx:for-index='u' wx:key="{{u}}" wx:for-item="wr">
+      <view class='img'>
+        <image src='{{wr.coverurl}}'></image>
+      </view>
+      <view class='goodsName'>
+        {{wr.name}}
+      </view>
+      <view class='price'>
+        <text>￥{{wr.price}}</text>
+        <text>x{{wr.num}}</text>
+      </view>
+    </view>
+    <view class='payment'>
+      <text class='goods-num'>共{{waitReceiving.allNum}}件商品</text>
+      <text class='need'>需要付款:</text>
+      <text class='price'> ￥{{waitReceiving.allPrice}}</text>
+      <!-- <text class='discounts'>(已优惠￥500.00)</text> -->
+    </view>
+    <view class='operation'>
+      <view class='look'>查看物流</view>
+      <view class='confirm'>确认订单</view>
+    </view>
+  </view>
+
+
+  <!--交易完成-->
+
+  <view class='box complete' wx:for="{{achieveArr}}" wx:for-item="achieve" wx:for-index="o" wx:key="{{o}}">
+    <view class='header-title'>
+      <view class='intro'>
+        <view class='photo'>
+          <image src='{{achieve.headurl}}'></image>
+        </view>
+        <view class='nickname'>{{achieve.anchorname}}</view>
+      </view>
+      <text>交易完成</text>
+    </view>
+
+    <view class='goods-message' wx:for="{{achieve.prolist}}" bindtap='toDetail' data-arr='{{[achieve.anchorid,ac.productid,ac.attrdesc]}}' wx:for-item="ac" wx:for-index="a" wx:key="a">
+      <view class='img'>
+        <image src='{{ac.coverurl}}'></image>
+      </view>
+      <view class='goodsName'>
+        {{ac.name}}
+      </view>
+      <view class='price'>
+        <text>￥{{ac.price}}</text>
+        <text>x{{ac.num}}</text>
+      </view>
+    </view>
+    <view class='payment'>
+      <text class='goods-num'>共{{achieve.allNum}}件商品</text>
+      <text class='need'>需要付款:</text>
+      <text class='price'> ￥{{achieve.allPrice}}</text>
+      <!-- <text class='discounts'>(已优惠￥500.00)</text> -->
+    </view>
+    <view class='operation'>
+      <view class='remove' bindtap='removeOrder' data-id='{{achieve.orderid}}'>删除订单</view>
+      <!-- <view class='again-pay' bindtap='agpay' >再次购买</view> -->
+    </view>
+  </view>
+
+
+  <!--交易关闭-->
+  <!-- <view class='box close'>
+    <view class='header-title'>
+      <view class='intro'>
+        <view class='photo'>
+          <image src='http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg'></image>
+        </view>
+        <view class='nickname'>迪丽几天是是说得对打快点大口大口小热巴</view>
+      </view>
+      <text>交易关闭</text>
+    </view>
+
+    <view class='goods-message'>
+      <view class='img'>
+        <image src='http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg'></image>
+      </view>
+      <view class='goodsName'>
+        大力马倒计上课水电费经理撒旦法阿斯顿发都是发达阿斯顿发已简介偶记兄弟是否撒旦法
+      </view>
+      <view class='price'>
+        <text>￥5675.00</text>
+        <text>x1</text>
+      </view>
+    </view>
+    <view class='payment'>
+      <text class='goods-num'>共1件商品</text>
+      <text class='need'>需要付款:</text>
+      <text class='price'> ￥5673.00</text>
+      <text class='discounts'>(已优惠￥500.00)</text>
+    </view>
+    <view class='operation'>
+      <view class='remove' bindtap='removeOrder'>删除订单</view>
+      <view class='again-pay'>再次购买</view>
+    </view>
+  </view>-->
+</view>
+</scroll-view>
+</swiper-item>
+
+
+<swiper-item>
+<scroll-view scroll-y style='height:{{height}}px'>
+<!--待付款-->
+<view class='container' wx:if="{{current==1}}">
+  <view class='nullImage' wx:if='{{waitPaymentLoading}}'>
+    加载中...
+  </view>
+  <view class='nullImage' hidden='{{noOrder2}}'>
+    <image src='{{unllImage}}' class='imageView' mode='aspectFit'></image>
+    <view class='no-text'>暂无订单消息</view>
+  </view>
+
+  <view class='box' wx:for="{{nonPaymentArr}}" wx:for-index="q" wx:for-item="itemName">
+    <view class='header-title'>
+      <view class='intro'>
+        <view class='photo'>
+          <image src='{{itemName.headurl}}'></image>
+        </view>
+        <view class='nickname'>{{itemName.anchorname}}</view>
+      </view>
+      <text>待付款</text>
+    </view>
+
+    <view class='goods-message' wx:for="{{itemName.prolist}}" bindtap='toDetail' data-arr='{{[itemName.anchorid,itemN.productid,itemN.attrdesc]}}' wx:for-index="w" wx:for-item="itemN">
+      <view class='img'>
+        <image src='{{itemN.coverurl}}'></image>
+      </view>
+      <view class='goodsName'>
+        {{itemN.name}}
+      </view>
+      <view class='price'>
+        <text>￥{{itemN.price}}</text>
+        <text>x{{itemN.num}}</text>
+      </view>
+    </view>
+
+    <view class='payment'>
+      <text class='goods-num'>共{{itemName.allNum}}件商品</text>
+      <text class='need'>需要付款:</text>
+      <text class='price'> ￥{{itemName.allPrice}}</text>
+      <!-- <text class='discounts'>(已优惠￥500.00)</text> -->
+    </view>
+    <view class='operation'>
+      <view class='remove' bindtap='removeOrder' data-id='{{itemName.orderid}}'>删除订单</view>
+      <view class='pay' bindtap='pay' data-id='{{itemName.orderid}}'>立即支付</view>
+    </view>
+  </view>
+
+</view>
+</scroll-view>
+</swiper-item>
+
+
+<swiper-item>
+<scroll-view scroll-y style='height:{{height}}px'>
+<!--待发货-->
+<view class='container' wx:if="{{current==2}}">
+  <view class='nullImage' wx:if='{{waitDeliverLoading}}'>
+    加载中...
+  </view>
+    <view class='nullImage' hidden='{{noOrder3}}'>
+    <image src='{{unllImage}}' class='imageView' mode='aspectFit'></image>
+    <view class='no-text'>暂无订单消息</view>
+  </view>
+
+  <view class='box ' wx:for="{{waitShipmentsArr}}" wx:for-index="r" wx:key="r" wx:for-item="waitShipments">
+    <view class='header-title'>
+      <view class='intro'>
+        <view class='photo'>
+          <image src='{{waitShipments.headurl}}'></image>
+        </view>
+        <view class='nickname'>{{waitShipments.anchorname}}</view>
+      </view>
+      <text>待发货</text>
+    </view>
+
+    <view class='goods-message' wx:for="{{waitShipments.prolist}}" bindtap='toDetail' data-arr='{{[waitShipments.anchorid,ws.productid,ws.attrdesc]}}'  wx:for-index="t" wx:for-item="ws">
+      <view class='img'>
+        <image src='{{ws.coverurl}}'></image>
+      </view>
+      <view class='goodsName'>
+        {{ws.name}}
+      </view>
+      <view class='price'>
+        <text>￥{{ws.price}}</text>
+        <text>x{{ws.num}}</text>
+      </view>
+    </view>
+    <view class='payment'>
+      <text class='goods-num'>共{{waitShipments.allNum}}件商品</text>
+      <text class='need'>需要付款:</text>
+      <text class='price'> ￥{{waitShipments.allPrice}}</text>
+      <!-- <text class='discounts'>(已优惠￥500.00)</text> -->
+    </view>
+    <view class='operation'>
+      <view class='remind' bindtap='remind'>提醒发货</view>
+    </view>
+  </view>
+</view>
+</scroll-view>
+</swiper-item>
+
+
+<swiper-item>
+<scroll-view style='height:{{height}}px' scroll-y>
+<!--待收货-->
+<view class='container' wx:if="{{current==3}}">
+  <view class='nullImage' wx:if='{{waitReceivingLoading}}'>
+    加载中...
+  </view>
+    <view class='nullImage' hidden='{{noOrder4}}'>
+    <image src='{{unllImage}}' class='imageView' mode='aspectFit'></image>
+    <view class='no-text'>暂无订单消息</view>
+  </view>
+  <view class='box' wx:for="{{waitReceivingArr}}" wx:for-index='y' wx:key="{{y}}" wx:for-item="waitReceiving">
+    <view class='header-title'>
+      <view class='intro'>
+        <view class='photo'>
+          <image src='{{waitReceiving.headurl}}'></image>
+        </view>
+        <view class='nickname'>{{waitReceiving.anchorname}}</view>
+      </view>
+      <text>待收货</text>
+    </view>
+
+    <view class='goods-message' wx:for="{{waitReceiving.prolist}}"  bindtap='toDetail' data-arr='{{[waitReceiving.anchorid,wr.productid,wr.attrdesc]}}' wx:for-index='u' wx:key="{{u}}" wx:for-item="wr">
+      <view class='img'>
+        <image src='{{wr.coverurl}}'></image>
+      </view>
+      <view class='goodsName'>
+        {{wr.name}}
+      </view>
+      <view class='price'>
+        <text>￥{{wr.price}}</text>
+        <text>x{{wr.num}}</text>
+      </view>
+    </view>
+    <view class='payment'>
+      <text class='goods-num'>共{{waitReceiving.allNum}}件商品</text>
+      <text class='need'>需要付款:</text>
+      <text class='price'> ￥{{waitReceiving.allPrice}}</text>
+      <!-- <text class='discounts'>(已优惠￥500.00)</text> -->
+    </view>
+    <view class='operation'>
+      <view class='look'>查看物流</view>
+      <view class='confirm'>确认订单</view>
+    </view>
+  </view>
+</view>
+</scroll-view>
+</swiper-item>
+
+<swiper-item>
+<scroll-view scroll-y style='height:{{height}}px'>
+<!--已完成-->
+<view class='container' wx:if="{{current==4}}">
+  <view class='nullImage' wx:if='{{achieveLoading}}'>
+    加载中...
+  </view>
+    <view class='nullImage' hidden='{{noOrder5}}'>
+    <image src='{{unllImage}}' class='imageView' mode='aspectFit'></image>
+    <view class='no-text'>暂无订单消息</view>
+  </view>
+  <view class='box complete' wx:for="{{achieveArr}}" wx:for-item="achieve" wx:for-index="o" wx:key="{{o}}">
+    <view class='header-title'>
+      <view class='intro'>
+        <view class='photo'>
+          <image src='{{achieve.headurl}}'></image>
+        </view>
+        <view class='nickname'>{{achieve.anchorname}}</view>
+      </view>
+      <text>交易完成</text>
+    </view>
+
+    <view class='goods-message' wx:for="{{achieve.prolist}}" bindtap='toDetail' data-arr='{{[achieve.anchorid,ac.productid,ac.attrdesc]}}'  wx:for-item="ac" wx:for-index="a" wx:key="{{a}}">
+      <view class='img'>
+        <image src='{{ac.coverurl}}'></image>
+      </view>
+      <view class='goodsName'>
+        {{ac.name}}
+      </view>
+      <view class='price'>
+        <text>￥{{ac.price}}</text>
+        <text>x{{ac.num}}</text>
+      </view>
+    </view>
+    <view class='payment'>
+      <text class='goods-num'>共{{achieve.allNum}}件商品</text>
+      <text class='need'>需要付款:</text>
+      <text class='price'> ￥{{achieve.allPrice}}</text>
+      <!-- <text class='discounts'>(已优惠￥500.00)</text> -->
+    </view>
+    <view class='operation'>
+      <view class='remove' bindtap='removeOrder' data-id='{{achieve.orderid}}'>删除订单</view>
+      <!-- <view class='again-pay'  bindtap='agpay' >再次购买</view> -->
+    </view>
+  </view>
+</view>
+</scroll-view>
+</swiper-item>
+</swiper>

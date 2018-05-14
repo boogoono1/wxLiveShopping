@@ -1,0 +1,118 @@
+.box-margin{
+  display: flex;
+  margin: 30rpx 20rpx 0;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.load{
+  font-size: 28rpx;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box-margin .box-item {
+  height: 420rpx;
+  width: 346rpx;
+  margin-bottom: 20rpx;
+  border-radius: 6rpx 6rpx 0 0;
+  background-color: #fff;
+}
+
+.box-margin .barcover {
+  position: relative;
+  width: 346rpx;
+  height: 260rpx;
+  border-radius: 6rpx 6rpx 0 0;
+}
+
+.box-margin .barcover .state {
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  font-size: 24rpx;
+  color: #fff;
+  line-height: 44rpx;
+  height: 44rpx;
+  width: 110rpx;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-image: url('http://106.14.221.147:10022/image/back.png');
+}
+
+.box-margin .barcover .state::before {
+  position: absolute;
+  content: "";
+  height: 0;
+  width: 0;
+  top: 18rpx;
+  left: 8rpx;
+  border: 4rpx solid #f42251;
+  border-radius: 50%;
+}
+
+.box-margin .sign {
+  margin: 14rpx 14rpx 0;
+  width: 314rpx;
+  height: 64rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.box-margin .message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10rpx 14rpx 0;
+  height: 50rpx;
+  width: 320rpx;
+}
+
+.box-margin .message .anchor {
+  width: 204rpx;
+  display: flex;
+  align-items: center;
+}
+
+.box-margin .message .anchor .headurl {
+  height: 50rpx;
+  width: 50rpx;
+  border-radius: 50%;
+}
+
+.box-margin .message .anchor .nickname {
+  display: inline-block;
+  font-size: 28rpx;
+  color: #666;
+  margin-left: 10rpx;
+  width: 150rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.box-margin .message .hot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 112rpx;
+  height: 33rpx;
+}
+
+.box-margin .message .hot .hot-photo {
+  width: 16rpx;
+  height: 22rpx;
+}
+
+.box-margin .message .hot .num {
+  margin-left: 8rpx;
+  font-size: 24rpx;
+  color: #999;
+}

@@ -1,0 +1,22 @@
+<scroll-view scroll-y class="box" bindscrolltolower="lower" style='height:{{height}}px'>
+  <view class='box-margin'>
+    <view class='box-item' wx:for="{{note}}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}" data-anchorid='{{item.userid}}' data-livestate='{{item.livestate}}' data-videoid='{{item.videoid}}' data-playaddress='{{item.playaddress}}' data-liveId='{{item.idx}}' bindtap='gotoLiveRoom'>
+      <image src='{{item.barcoverurl}}' class='barcover'>
+        <text class='state' wx:if="{{item.livestate==1}}">直播中</text>
+        <text class='state' wx:else>录播</text>
+      </image>
+      <view class='sign'>{{item.sign}}</view>
+      <view class='message'>
+        <view class='anchor'>
+          <image src='{{item.headurl}}' class='headurl'> </image>
+          <text class='nickname'>{{item.nickname}}</text>
+        </view>
+        <view class='hot'>
+          <image src='{{hoturl}}' class='hot-photo'></image>
+          <text class='num'>{{item.fansnum}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view hidden='{{currentLoading}}' class='load'>加载中...</view>
+</scroll-view>

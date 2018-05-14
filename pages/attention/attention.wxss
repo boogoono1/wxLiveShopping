@@ -1,0 +1,177 @@
+/* pages/attention/attention.wxss */
+
+.allContent {
+  width: 750rpx;
+  margin-top: 20rpx;
+}
+
+.singleView {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  margin-bottom: 30rpx;
+}
+
+.itemCell {
+  height: 136rpx;
+  width: 100%;
+  display: flex;
+  border-top: 1rpx solid #f6f6f6;
+  flex-direction: row;
+}
+
+.headImg {
+  margin: 28rpx 0 0 30rpx;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+}
+
+.introView {
+  width: 400rpx;
+  display: flex;
+  flex-direction: column;
+  margin: 32rpx 0 0 30rpx;
+}
+
+.starAnchor {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.introduce {
+  font-size: 20rpx;
+  color: #999;
+}
+
+.statued {
+  width: 148rpx;
+  margin-top: 32rpx;
+  height: 56rpx;
+  border-radius: 28rpx;
+  border: 1rpx solid #e46571;
+  line-height: 56rpx;
+  text-align: center;
+  color: #e46571;
+  font-size: 32rpx;
+}
+
+.statu {
+  width: 148rpx;
+  margin-top: 32rpx;
+  height: 56rpx;
+  border-radius: 28rpx;
+  background: #e46571;
+  line-height: 56rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 32rpx;
+}
+
+.gotoLiveRoom {
+  width: 160rpx;
+  height: 100%;
+  color: #e3656f;
+  font-size: 30rpx;
+  margin-left: 20rpx;
+  line-height: 136rpx;
+}
+
+.redMoreImg {
+  width: 44rpx;
+  height: 35rpx;
+  margin-left: -18rpx;
+  margin-top: 52rpx;
+  margin-right: 15rpx;
+}
+
+.grayView {
+  height: 102rpx;
+  width: 124rpx;
+  border-radius: 10px;
+  margin: auto 10rpx;
+  background: #666;
+  line-height: 102rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 24rpx;
+}
+
+.pictureView {
+  height: 102rpx;
+  width: 124rpx;
+  margin: auto 10rpx;
+}
+
+.picImg {
+  border-radius: 14rpx;
+  height: 102rpx;
+  width: 124rpx;
+}
+
+.attentionView {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.expendView {
+  background: #fefefe;
+  border-radius: 50%;
+  height: 44rpx;
+  width: 44rpx;
+  margin-top: 22rpx;
+  margin-left: 21px;
+}
+
+.closeExpendView {
+  background: #fff;
+  border-radius: 22rpx;
+  height: 44rpx;
+  width: 44rpx;
+  margin-top: 164rpx;
+  margin-left: 21px;
+  right: 124rpx;
+  top: 244rpx;
+}
+
+.expend {
+  width: 44rpx;
+  height: 44rpx;
+}
+
+.moreView {
+  width: 70rpx;
+  height: 13rpx;
+  margin: auto 10rpx;
+}
+
+.verticalView {
+  display: flex;
+  flex-direction: column;
+}
+.load{
+  color: #333;
+  font-size: 28rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.blank{
+  display: flex;
+  margin-top: 25%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.blank image{
+  width: 352rpx;
+  height: 220rpx;
+}
+.blank .no-text{
+  margin-top: 60rpx;
+  font-size: 28rpx;
+  color: #666;
+}

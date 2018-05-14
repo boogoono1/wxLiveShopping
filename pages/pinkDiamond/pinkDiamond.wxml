@@ -1,0 +1,16 @@
+<!--pages/pinkDiamond/pinkDiamond.wxml-->
+<view class='box'>
+ <image src='{{pinkBg}}' class='photo-bg'></image>
+  <image src='{{pinkbg2}}' class='photo-bg-2'></image>
+<view class='img'>
+<image class='diamond' src='{{pink}}'></image>
+</view>
+<view class='content'>
+<text class='num'>{{num}}</text>
+<text class='text'>粉钻</text>
+</view>
+<view class='operation'>
+<button class='button' bindtap='toStore' open-type="launchApp" app-parameter="wechat" binderror="launchAppError">前往积分商城</button>
+<!-- <button open-type="launchApp" app-parameter="wechat" binderror="launchAppError">打开APP</button> -->
+</view>
+</view>

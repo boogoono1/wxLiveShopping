@@ -1,0 +1,128 @@
+<!--pages/profitDetails/profitDetails.wxml-->
+<view class='header'>
+  <view class='text'></view>
+  <view class="text {{id==1 ? 'active':''}}" bindtap='isClick' data-id="1">宝贝</view>
+  <view class="text {{id==2 ? 'active':''}}" bindtap='isClick' data-id='2'>详情</view>
+  <view class='text'></view>
+</view>
+
+<scroll-view scroll-y scroll-top="{{scrollTop}}" scroll-with-animation scroll-into-view="list-{{idName}}" style='height:{{height}}px' bindscroll="pageScroll">
+<view> 
+  <swiper indicator-dots="{{true}}" indicator-color="{{indicatorColor}}" indicator-active-color="{{indicatorActiveColor}}" autoplay="{{true}}" interval="{{3000}}" duration="{{500}}" circular="{{true}}">
+    <block wx:for="{{turnimg}}" wx:for-index="id" wx:key="id" wx:for-item="item">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" width="100%" height="100%" />
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class='goods-information'>
+    <view class='name'>{{goodsObj.name}}</view>
+    <view class='price'>￥{{goodsObj.price}}</view>
+    <view class='old-price'>原价￥{{goodsObj.originprice}}</view>
+    <view class='sell'>
+      <view class='expressage'>快递：包邮</view>
+      <view class='sell-num'>月销{{goodsObj.salesnum}}笔</view>
+    </view>
+  </view>
+  <view class='options'>
+    <view class='color-option public' bindtap='isLaunch'>
+      <text wx:if="{{classify=='分类'}}">选择  {{classify}}</text>
+      <text wx:else>已选择  {{classify}}</text>
+      <i class="iconfont icon-arrow-right"></i>
+    </view>
+    <view class='line'></view>
+    <view class='goods-parameter public' bindtap='isOpen' >
+      <text>产品参数</text>
+      <i class="iconfont icon-arrow-right"></i>
+    </view>
+  </view>
+  <view class='detail' id="list-detail">
+    <view class='title'>
+      详情
+    </view>
+    <!--详情列表-->
+    <view class='showPhoto' wx:for="{{infoimg}}" wx:for-index="idx" wx:key="idx" wx:for-item="itemName">
+      <image src='{{itemName}}'></image>
+    </view>
+  </view>
+
+  <!--选择悬浮窗-->
+  <view class='model-box' wx:if="{{isLaunch}}">
+    <view class='my-shadow' bindtap='isTest'></view>
+    <view class='color-module' animation="{{animationData}}">
+      <view class='goods-msg clearfix'>
+        <view class='img'>
+          <image src="{{url}}"></image>
+        </view>
+        <view class='message'>
+          <view class='operation'>
+            <view class='price'>￥{{price}}</view>
+            <view class='cancel' bindtap='colorIsClose'>
+              <image src="{{closeUrl}}"></image>
+            </view>
+          </view>
+          <view class='inventory'>
+            库存{{stock}}件
+          </view>
+          <view class='selected' wx:if="{{classify=='分类'}}">
+            请选择 分类
+          </view>
+          <view class='selected' wx:else>
+            已选择"{{classify}}"
+          </view>
+        </view>
+      </view>
+      <scroll-view scroll-y style='height:440rpx'>
+        <!--属性-->
+        <view class='goods-color' wx:for="{{attrInfo}}" wx:for-item="attr" wx:for-index="i" wx:key="{{i}}">
+          <text>{{attr.attrname}}</text>
+          <view class='goods-color-items'>
+          {{testArr}}
+            <view class="color-item {{single.isSelect?'colorActive':''}}" bindtap='isSelected' data-num="{{[i,e]}}" wx:for="{{attr.attrValueList}}" wx:for-index="e" wx:key="{{e}}" wx:for-item="single">
+              {{single.attrname}}
+            </view>
+          </view>
+        </view>
+        <!--购买数量-->
+        <view class='goods-num'>
+          <text>购买数量</text>
+          <view class='compute'>
+            <text bindtap='boxMinus'> - </text>
+            <view class='num'>{{goodsNum}}</view>
+            <text bindtap='boxAdd'> + </text>
+          </view>
+        </view>
+      </scroll-view>
+      <view class='buy-box'>
+        <view class='go-buys' bindtap='ok'>确定</view>
+      </view>
+    </view>
+  </view>
+
+  <!--产品参数悬浮窗-->
+  <view class='model-box' wx:if="{{parameterIsLaunch}}">
+    <view class='my-shadow' bindtap='isTest'></view>
+    <view class='parameter-module' animation="{{animationData}}">
+      <view class='title'>
+        <text class='h1'>产品参数</text>
+      </view>
+      <scroll-view scroll-y style='height:486rpx'>
+        <view class='goods' wx:for="{{otherparameters}}" wx:for-index="n" wx:for-item="ite" wx:key="{{n}}">
+          <text class='titleName'>{{ite.Key}}</text>
+          <text class='arguments'>{{ite.Value}}</text>
+        </view>
+      </scroll-view>
+      <view class='ok' bindtap='isOk'>确定</view>
+    </view>
+  </view>
+</view>
+</scroll-view>
+<!--底部-->
+<view class='bottom-button'>
+  <view class='no-buy public-flex' wx:if="{{false}}">
+    不可换购
+  </view>
+  <view class='buy public-flex' bindtap='goBuys' wx:else>
+    立即购买
+  </view>
+</view>

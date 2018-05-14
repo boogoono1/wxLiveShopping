@@ -1,0 +1,140 @@
+<!--pages/cart/cart.wxml-->
+<block wx:if="{{cartArr.length>0}}">
+<view class="container {{in==index?'margin':''}}" wx:for="{{cartArr}}"  wx:for-index="index" wx:for-item="item" wx:key="{{index}}">
+  <view class='header'>
+    <view class='resume'>
+      <view class='all-select' bindtap='isAllSelect' data-id='{{index}}'>
+        <image src='{{selectedIcon}}' wx:if="{{item.isAllSelect}}"></image>
+        <image src='{{selectIcon}}' wx:else></image>
+      </view>
+      <image src='{{item.anchorheadurl}}'></image>
+      <view class='nickname'>{{item.anchorname}}</view>
+    </view>
+    <view class='edit' style="color:{{item.isEdit?'#e3656f':''}}" bindtap='edit' data-id="{{index}}">{{item.isEdit?'完成':'编辑商品'}}</view>
+  </view>
+
+  <view class='goods-message'>
+    <view class='goods-item' wx:for="{{item.prolist}}" wx:for-index="ind" wx:for-item="itemName" wx:key="{{ind}}">
+
+      <view class='goods-item-box'>
+        <view class='select' bindtap='isCheck' data-id='{{[index,ind]}}'>
+          <image src='{{selectedIcon}}' wx:if="{{itemName.isSelect}}"></image>
+          <image src='{{selectIcon}}' wx:else></image>
+        </view>
+
+        <view class='goods' bindtap='toProfitDetails' data-id='{{[index,ind]}}'  >
+          <view class='img'>
+            <image src='{{itemName.coverurl}}'></image>
+          </view>
+
+          <view class='content' wx:if="{{!item.isEdit}}">
+            <view class='goodsName'>{{itemName.name}}</view>
+            <view class='price'>￥{{itemName.price}}</view>
+          </view>
+          <!--属性-->
+          <view class='new-content' wx:else>
+            <view class='operate'>
+              <text bindtap='minus' data-id='{{[index,ind]}}'>-</text>
+              <text class='num'>{{itemName.num}}</text>
+              <text bindtap='add' data-id='{{[index,ind]}}'>+</text>
+            </view>
+            <view class='attribute' data-id='{{[index,ind]}}' bindtap='isLaunch'>
+              {{itemName.attrdesc}}
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class='num' wx:if="{{!item.isEdit}}">x{{itemName.num}}</view>
+      <view class='remove' wx:else data-id='{{[index,ind]}}' bindtap='remove'>删除</view>
+
+    </view>
+
+  </view>
+</view>
+
+
+
+<view class='footer'>
+  <view class='allSelect'>
+    <view class='all' bindtap='allSelect'>
+      <view class='img'>
+        <image src='{{selectedIcon}}' wx:if="{{allSelect}}"></image>
+        <image src='{{selectIcon}}' wx:else></image>
+      </view>
+      <text>全选</text>
+    </view>
+    <view class='allPrice'>总计:￥{{allPrice}}</view>
+  </view>
+  <view class='button' wx:if="{{!start}}">去结算
+    <text>(共{{allNum}}件)</text>
+  </view>
+  <view class='button active' bindtap='goSettleAccount' wx:else>去结算
+    <text>(共{{allNum}}件)</text>
+  </view>
+</view>
+
+<!--选择悬浮窗-->
+<view class='model-box' wx:if="{{isLaunch}}">
+  <view class='my-shadow' bindtap='isTest'></view>
+  <view class='color-module' animation="{{animationData}}">
+    <view class='goods-msg clearfix'>
+      <view class='img'>
+        <image src="{{url}}"></image>
+      </view>
+      <view class='message'>
+        <view class='operation'>
+          <view class='price'>￥{{price}}</view>
+          <view class='cancel' bindtap='isClose'>
+            <image src="{{closeUrl}}"></image>
+          </view>
+        </view>
+        <view class='inventory'>
+          库存{{stock}}件
+        </view>
+        <view class='selected' wx:if="{{classify=='分类'}}">
+          请选择 分类
+        </view>
+        <view class='selected' wx:else>
+          已选择"{{classify}}"
+        </view>
+      </view>
+    </view>
+    <scroll-view scroll-y style='height:440rpx'>
+      <!--属性-->
+        <view class='goods-color' wx:for="{{attrInfo}}" wx:for-item="attr" wx:for-index="i" wx:key="{{i}}">
+          <text>{{attr.attrname}}</text>
+          <view class='goods-color-items'>
+            <view class="color-item {{single.isSelect?'colorActive':''}}" bindtap='isSelected' data-num="{{[i,e]}}" wx:for="{{attr.attrValueList}}" wx:for-index="e" wx:key="{{e}}" wx:for-item="single">
+              {{single.attrname}}
+            </view>
+          </view>
+        </view>
+    
+      <!--购买数量-->
+      <view class='goods-num'>
+        <text>购买数量</text>
+        <view class='compute'>
+          <text bindtap='boxMinus'> - </text>
+          <view class='num'>{{goodsNum}}</view>
+          <text bindtap='boxAdd'> + </text>
+        </view>
+      </view>
+    </scroll-view>
+    <view class='buy-box'>
+      <view class='go-buys' bindtap='goBuys'>确定</view>
+    </view>
+  </view>
+</view>
+</block>
+
+<!--为空时-->
+<block wx:else>
+<view  class='noCart' wx:if="{{onCart}}">
+<image src='{{noCarturl}}' ></image>
+<text class='no-text'>您的购物车暂无商品</text>
+</view>
+<view  class='noCart' hidden='{{cartLoading}}'>
+加载中...
+</view>
+</block>

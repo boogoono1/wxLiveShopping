@@ -1,0 +1,49 @@
+<!--pages/myAccount/myAccount.wxml-->
+<view class='container'>
+  <view class='title-item'>
+    <text wx:for="{{titleArr}}" class="{{active==ind?'active':''}}" wx:for-index="ind" wx:for-item="item" wx:key="ind" bindtap='isClick' data-id='{{ind}}'>{{item}}</text>
+  </view>
+</view>
+
+<swiper class='swiper' bindchange="move" current="{{active}}">
+  <swiper-item class="swiper-item"  bindtap="toPink" data-num="{{pinkDiamondNum}}">
+<!--粉钻-->
+  <image src='{{pinkUrl[0]}}' class='photo-bg'></image>
+  <image src='{{pinkUrl[1]}}' class='photo-bg-2'></image>
+  <view class='img pink'>
+    <image src='{{pinkUrl[2]}}'></image>
+  </view>
+  <view class='content' >
+    <text class='balance'>粉钻余额</text>
+    <view class='num'>{{pinkDiamondNum}}</view>
+        <text class='tip'>分享有礼，红包奖品等着你</text>
+  </view>
+  </swiper-item>
+  <swiper-item class="swiper-item select" bindtap="toYellow" data-num="{{yellowDiamondNum}}">
+ <!--黄钻-->
+  <image src='{{yellowUrl[0]}}' class='photo-bg'></image>
+    <image src='{{yellowUrl[1]}}' class='photo-bg-2'></image>
+  <view class='img'>
+<image class='diamond' src='{{yellowUrl[2]}}'></image>
+</view>
+  <view class='content'>
+    <text class='balance'>黄钻余额</text>
+    <view class='yellow'>{{yellowDiamondNum}}</view>
+        <text class='tip'>分享有礼，红包奖品等着你</text>
+  </view>
+
+  </swiper-item>
+  <swiper-item class="swiper-item"  bindtap="toDiscounts" data-num="{{pinkDiamondNum}}">
+   <image src='{{discountsUrl}}'  class='photo-bg'></image>
+   <view class='header-word'>
+     优惠劵
+   </view>
+   <view class='main-word'>
+   {{discountsNum}} 张
+   </view>
+   <text class='footer-word'>
+   更多优惠，尽在播购
+   </text>
+  </swiper-item>
+
+</swiper>

@@ -1,0 +1,118 @@
+<view class='container'>
+  <view class='navView'>
+    <view bindtap='isClick' class="{{current=='0' ? 'active':''}}" data-id='0'>
+      未使用
+    </view>
+    <view bindtap='isClick' class="{{current=='1' ? 'active':''}}" data-id='1'>
+      全部
+    </view>
+  </view>
+   
+<swiper duration="{{duration}}" current="{{current}}" bindchange="change" style='height:{{height}}px'>
+<swiper-item>
+<scroll-view scroll-y style='height:{{contentHeight}}px'>
+<!--未使用-->
+  <view class='contentView' wx:if="{{current=='0'}}" >
+  <view hidden='{{isHidden}}' class='load'>加载中...</view>
+    <!--满减劵-->
+    <view class='couponScrolView'>
+      <view class='couponitem' wx:for="{{noMoneyOffArr}}" wx:for-item="item" wx:key='{{key}}' wx:for-index="key">
+        <view class='couponDescription'>
+          <p class='couponCount'>￥{{item.replace}}</p>
+          <p class='tipWord2'>(仅限数码产品)</p>
+        </view>
+        <view class='couponCondiction'>
+          <p class='couponCount1'>满{{item.satisfy}}抵{{item.replace}}</p>
+          <p class='tipWord1'>有效期{{item.validperiodstart}}-{{item.validperiodend}}</p>
+        </view>
+      </view>
+    </view>
+    
+    <!--折扣券-->
+    <view class='couponScrolView'>
+      <view class='couponitem' wx:for="{{noDiscountArr}}" wx:for-item="itemN" wx:for-index="in" wx:key="{{in}}">
+        <view class='couponDescription'>
+          <p class='couponCount'>{{itemN.couponcontent}}折</p>
+          <p class='tipWord2'>(仅限数码产品)</p>
+        </view>
+        <view class='couponCondiction'>
+          <p class='couponCount1'>现金折扣券</p>
+          <p class='tipWord1'>有效期{{itemN.validperiodstart}}-{{itemN.validperiodend}}</p>
+        </view>
+      </view>
+    </view>
+    <!--通用劵-->
+    <view class='couponScrolView'>
+      <view class='couponitem' wx:for="{{noGeneralArr}}" wx:for-item="itemName" wx:for-index="i" wx:key="{{i}}">
+        <view class='couponDescription'>
+          <p class='couponCount'>￥{{itemName.couponcontent}}</p>
+          <p class='tipWord2'>(全场通用)</p>
+        </view>
+        <view class='couponCondiction'>
+          <p class='couponCount1'>现金抵用券</p>
+          <p class='tipWord1'>有效期{{itemName.validperiodstart}}-{{itemName.validperiodend}}</p>
+        </view>
+      </view>
+    </view>
+  </view>
+</scroll-view>
+
+</swiper-item>
+<swiper-item>
+<scroll-view scroll-y style='height:{{contentHeight}}px'>
+ <!--全部-->
+  <view class='contentView' wx:if="{{current=='1'}}" >
+    <!--满减劵-->
+    <view class='couponScrolView'>
+    {{itemName.state}}
+      <view class="couponitem {{item.state==0?'':'bgchange'}}"  wx:for="{{moneyOffArr}}" wx:for-item="item" wx:key='{{key}}' wx:for-index="key">
+        <view class='couponDescription'>
+          <p class='couponCount'>￥{{item.replace}}</p>
+          <p class='tipWord2'>(仅限数码产品)</p>
+        </view>
+        <view class='couponCondiction'>
+          <p class='couponCount1'>满{{item.satisfy}}抵{{item.replace}}</p>
+          <p class='tipWord1'>有效期{{item.validperiodstart}}-{{item.validperiodend}}</p>
+        </view>
+           <image src='{{usedImgUrl}}' class='cover' wx:if="{{itemN.state==1}}"></image>
+        <image src='{{failedImgUrl}}' wx:elif="{{itemN.state==-1}}" class='cover'></image>
+      </view>
+    </view>
+    <!--折扣券-->
+    <view class='couponScrolView'>
+      <view class="couponitem {{itemN.state==0?'':'bgchange'}}"  wx:for="{{discountArr}}" wx:for-item="itemN" wx:for-index="in" wx:key="{{in}}">
+        <view class='couponDescription'>
+          <p class='couponCount'>{{itemN.couponcontent}}折</p>
+          <p class='tipWord2'>(仅限数码产品)</p>
+        </view>
+        <view class='couponCondiction'>
+          <p class='couponCount1'>现金折扣券</p>
+          <p class='tipWord1'>有效期{{itemN.validperiodstart}}-{{itemN.validperiodend}}</p>
+        </view>
+        <image src='{{usedImgUrl}}' class='cover' wx:if="{{itemN.state==1}}"></image>
+        <image src='{{failedImgUrl}}' wx:elif="{{itemN.state==-1}}" class='cover'></image>
+
+      </view>
+    </view>
+    <!--通用劵-->
+    <view class='couponScrolView'>
+      <view class="couponitem {{itemName.state==0?'':'bgchange'}}" wx:for="{{generalArr}}" wx:for-item="itemName" wx:for-index="i" wx:key="{{i}}">
+        <view class='couponDescription'>
+          <p class='couponCount'>￥{{itemName.couponcontent}}</p>
+          <p class='tipWord2'>(全场通用)</p>
+        </view>
+        <view class='couponCondiction'>
+          <p class='couponCount1'>现金抵用券</p>
+          <p class='tipWord1'>有效期{{itemName.validperiodstart}}-{{itemName.validperiodend}}</p>
+        </view>
+        <image src='{{usedImgUrl}}' class='cover' wx:if="{{itemName.state==1}}"></image>
+        <image src='{{failedImgUrl}}' wx:elif="{{itemName.state==-1}}" class='cover'></image>
+      </view>
+    </view>
+
+  </view>
+</scroll-view>
+</swiper-item>
+</swiper>
+  
+</view>

@@ -1,0 +1,17 @@
+
+<view class='container'>
+  <view class='singleDateView' wx:for="{{listData}}" wx:key='{{index}}'>
+    <view class='printDate'>{{item[0].date}}</view>
+    <scroll-view scroll-x='true' class='scroll-image-View'>
+      <view class='singleView' wx:for='{{item}}' wx:for-item="anchor" wx:key="index" data-tapIndex='{{index}}' bindtap='checkprint'>
+        <image class='anchorImg' src='{{anchor.barcoverurl}}' mode="widthFix"></image>
+        <view class='signature' >{{anchor.introduce}}</view>
+      </view>
+    </scroll-view>
+  </view>
+   <view class='load' hidden='{{isHidden}}'>加载中...</view> 
+  <view class='blank' hidden='{{isBlank}}'>
+    <image src='{{img}}' class='blank' ></image> 
+    <view class='no-text'>暂无足迹</view>
+   </view>
+</view>

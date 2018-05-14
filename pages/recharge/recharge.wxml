@@ -1,0 +1,27 @@
+<!--pages/recharge/recharge.wxml-->
+<view class='header'>
+<view class='num'>{{num}}</view>
+<text>黄钻余额</text>
+</view>
+<view class='main'>
+<view class='title'>黄钻充值</view>
+<view class='box'>
+<view class='recharge' bindtap='rechargeOne'>
+<view class='money'>6元</view>
+<view class='yellowDiamondNum'>42个黄钻</view>
+</view>
+<view class='recharge' bindtap='rechargeTwo'>
+<view class='money'>30元</view>
+<view class='yellowDiamondNum'>210个黄钻</view>
+</view>
+<view class='recharge' bindtap='rechargeThree'>
+<view class='money'>98元</view>
+<view class='yellowDiamondNum'>686个黄钻</view>
+</view>
+<view class='recharge' bindtap='rechargeFour'>
+<view class='money'>198元</view>
+<view class='yellowDiamondNum'>1386个黄钻</view>
+</view>
+
+</view>
+</view>

@@ -1,0 +1,41 @@
+<view class='container'>
+  <view class='allContent'>
+    <view class='singleView' wx:for="{{attetionAnchoList}}" wx:key="{{index}}">
+      <view class='itemCell' data-index='{{index}}' bindtap='openOtherCell'>
+        <image class='headImg' src='{{item.headurl}}' mode='aspectFit'></image>
+        <view class='introView'>
+          <label class='starAnchor'>{{item.nickname}}</label>
+          <label class='introduce'>{{item.sign}}</label>
+        </view>
+        <view class='attentionView'>
+          <view class="{{item.isfollow == 1?'statued':'statu'}}" catchtap='cancleAndAttention' data-anchorid='{{item.userid}}' data-isfollow='{{item.isfollow}}' data-index='{{index}}'>{{item.isfollow == 1?'已关注':'关注'}}</view>
+          <view class='expendView' hidden='{{!item.openStatus}}'>
+            <image class='expend' src='{{imageData.expendMore}}' mode='aspectFit'></image>
+          </view>
+          <view class='closeExpendView' hidden='{{item.openStatus}}'>
+            <image class='expend' src='{{imageData.upClose}}' mode='aspectFit'></image>
+          </view>
+        </view>
+      </view>
+      <view class='itemCell' hidden='{{item.openStatus}}' >
+        <view class='gotoLiveRoom' bindtap='toAnchor' data-id='{{item.userid}}'>进入主播页</view>
+        <image class='redMoreImg' src='{{imageData.redRightMore}}' mode='aspectFit'></image>
+        <view class='grayView' wx:if='{{item.videolist.length ==  0}}'>暂无回放</view>
+        <view class='pictureView' wx:for='{{item.videolist}}' wx:for-item="video" wx:key="{{index}}" wx:if="{{index<3}}">
+          <image class='picImg' src='{{video.barcoverurl}}' mode='scaleToFill' bindtap='gotovideo' data-videoid='{{video.videoid}}' data-anchorid='{{video.userid}}' data-playaddress='{{video.playaddress}}'></image>
+        </view>
+     
+        <image wx:if='{{item.videolist.length == 3}}' class='moreView' src='{{imageData.threeDot}}' mode='scaleToFill'></image>
+    
+        
+      </view>
+    </view>
+    
+  </view>
+   <view class='load' hidden='{{isHidden}}'>加载中...</view> 
+  <view class='blank' hidden='{{isBlank}}'>
+    <image src='{{img}}' class='blank' ></image> 
+    <view class='no-text'>暂无关注</view>
+   </view>
+
+</view>

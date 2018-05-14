@@ -1,0 +1,40 @@
+<!--pages/user/user.wxml-->
+<view class='header'>
+  <view class='userMessage'>
+    <view class='photo'>
+      <image src='{{headurl}}'></image>
+    </view>
+    <view class='name'>
+      <view class='nickname'>{{nickname}}</view>
+      <text>boogoo号: {{idx}}</text>
+    </view>
+  </view>
+</view>
+<!--选项-->
+<view class='options'>
+  <view class='option-item' wx:for="{{optionArr}}" wx:for-index="idx" wx:key="idx" data-id='{{idx}}' wx:for-item="item" bindtap='toOrder'>
+    <view class='option-img'>
+      <image src='{{item.url}}'></image>
+    </view>
+    <text>{{item.title}}</text>
+  </view>
+</view>
+<!--账户-->
+<view class='account'>
+  <view class='account-item' wx:for="{{accountArr}}" wx:for-index="id" wx:key="id" wx:for-item="itemName" data-id='{{[id,itemName.num]}}' bindtap='toAccount'>
+    <view class='account-img' wx:if="{{itemName.url.length>0}}">
+      <image src='{{itemName.url}}'></image>
+    </view>
+    <view class="num {{itemName.title=='优惠劵'?'active':''}}" wx:else>{{itemName.num }}</view>
+    <text>{{itemName.title}}</text>
+  </view>
+</view>
+<!--服务-->
+<view class='service'>
+  <view class='service-item' wx:for="{{serviceArr}}" wx:for-index="i" wx:key="i" wx:for-item="ite" data-nav="{{ite.nav}}" bindtap='toJump'>
+    <view class='service-img'>
+      <image src='{{ite.url}}'></image>
+    </view>
+    <text>{{ite.title}}</text>
+  </view>
+</view>

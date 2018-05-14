@@ -1,0 +1,121 @@
+/* pages/pinkDiamond/yellowDiamond.wxss */
+
+page {
+  background-image: linear-gradient(-140deg, #e3657a 0%, #e4654d 94%);
+}
+
+.box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  width: 700rpx;
+  height: 916rpx;
+  background-color: #f3c6c7;
+  border-radius: 20rpx;
+}
+
+.box .photo-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  width: 666rpx;
+  height: 882rpx;
+}
+
+.box .photo-bg-2 {
+  position: relative;
+  width: 715rpx;
+  height: 48rpx;
+  top: 128rpx;
+  left: -5rpx;
+  right: 0;
+  margin: auto;
+}
+
+.box .img {
+  position: absolute;
+  top: 68rpx;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  width: 160rpx;
+  height: 160rpx;
+  background-color: #fff;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.box .img .diamond {
+  width: 160rpx;
+  height: 160rpx;
+}
+
+.content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  left: 18rpx;
+  top: 120rpx;
+  z-index: 100;
+  width: 666rpx;
+  height: 358rpx;
+  border-bottom: 1rpx dashed #e3656f;
+}
+
+.content .num {
+  font-size: 72rpx;
+  color: #f1a244;
+}
+
+.content .text {
+  margin-top: 40rpx;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.operation {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  top: 118rpx;
+  z-index: 100;
+  left: 18rpx;
+  height: 262rpx;
+  width: 666rpx;
+  border-bottom: 1rpx solid #f6f6f6;
+}
+
+.operation .recharge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 282rpx;
+  color: #e3656f;
+  height: 80rpx;
+  box-sizing: border-box;
+  border-radius: 40rpx;
+  border: 1rpx solid #e3656f;
+}
+
+.operation .play-tour {
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200rpx;
+  color: #fff;
+  height: 80rpx;
+    border-radius: 40rpx;
+  background-image: linear-gradient(-140deg, #e4654d 0%, #e3657a 94%);
+}

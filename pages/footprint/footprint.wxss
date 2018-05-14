@@ -1,0 +1,61 @@
+.singleDateView{
+  width: 720rpx;
+}
+.printDate{
+  margin: 30rpx auto 30rpx 30rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+.scroll-image-View{
+  width: 100%;
+  white-space: nowrap;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.singleView{
+  display:inline-flex;
+  width:7px 7px 0 0;
+  height:240rpx;
+  flex-direction:column;
+  margin-left:30rpx;
+  border-radius:14rpx;
+  background:#ececec;
+}
+.anchorImg{
+  width: 210rpx;
+  border-radius: 14rpx 14rpx 0 0;
+}
+.signature{
+  padding: 10rpx;
+  width: 190rpx;
+  text-align: left;
+  white-space: pre-wrap;
+  color: #666666;
+  font-size: 24rpx;
+  overflow: hidden;
+  height: 60rpx;
+  text-overflow: ellipsis;
+}
+.load{
+  color: #333;
+  font-size: 28rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.blank{
+  display: flex;
+  margin-top: 25%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.blank image{
+  width: 352rpx;
+  height: 220rpx;
+}
+.blank .no-text{
+  margin-top: 60rpx;
+  font-size: 28rpx;
+  color: #666;
+}

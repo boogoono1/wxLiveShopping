@@ -1,0 +1,149 @@
+/* pages/coupon/coupon.wxss */
+
+.navView {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 750rpx;
+  height: 104rpx;
+  display: flex;
+  font-size: 32rpx;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fff;
+  border-top: 2rpx solid #f6f6f6;
+}
+.navView view{
+  display: flex;
+  align-items: center;
+  height: 104rpx;
+  border: 2rpx solid transparent;
+}
+
+.navView .active {
+  color: #e3656f;
+  border-bottom: 2rpx solid #e3656f;
+}
+swiper{
+    margin-top: 110rpx;
+}
+
+.contentView {
+  width: 100%;
+}
+.load{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}
+.couponScrolView .couponitem:first-child{
+  margin-top: 34rpx;
+}
+.couponitem {
+  position: relative;
+  margin: 0 44rpx 20rpx 44rpx;
+  border-radius: 14rpx;
+  height: 152rpx;
+  display: flex;
+  padding-left: 12rpx;
+  align-items: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-image: url('http://106.14.221.147:10022/image/coupon_bg_already_received.png');
+}
+
+.couponitem1 {
+  margin: 0 20rpx 10rpx 20rpx;
+  background: #fff;
+  border-radius: 14rpx;
+  width: 710rpx;
+  height: 188rpx;
+  display: flex;
+  flex-direction: row;
+}
+
+.couponDescription {
+  width: 170rpx;
+  height: 120rpx;
+  border-radius: 6rpx;
+  flex-direction: column;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.couponCount {
+  height: 62rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #e36572;
+}
+
+.tipWord {
+  text-align: center;
+  height: 21rpx;
+  font-size: 32px;
+  color: #002930;
+  margin-top: 20rpx;
+  margin-left: 30rpx;
+  margin-bottom: 21rpx;
+}
+
+.couponCondiction {
+  margin-left: 30rpx;
+  width: 220rpx;
+  flex-direction: column;
+  display: flex;
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+}
+
+.couponCount1 {
+  font-size: 36rpx;
+}
+
+.tipWord1 {
+  font-size: 24rpx;
+  margin-top: 20rpx;
+}
+
+.tipWord2 {
+  text-align: center;
+  height: 24rpx;
+  font-size: 20rpx;
+  color: #e36572;
+  margin-top: 6rpx;
+}
+
+.unit {
+  font-size: 30rpx;
+  color: #e31c2c;
+}
+
+.selectedImg {
+  width: 28rpx;
+  height: 30rpx;
+  margin: 40rpx 40rpx 0 0;
+}
+.bgchange{
+ background-image: url('http://106.14.221.147:10022/image/couponBg.png');
+}
+.bg{
+   background-image: url('http://106.14.221.147:10022/image/coupon_bg_already_received.png');
+}
+.cover{
+  position: absolute;
+  height: 152rpx;
+  width: 100%;
+  left: 0rpx;
+  border-radius: 14rpx;
+}
+.newCover{
+  z-index: -1;
+}

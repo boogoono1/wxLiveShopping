@@ -1,0 +1,555 @@
+/* pages/liveRoom/liveRoom.wxss */
+.container{
+     background: #5C5F71;
+}
+
+.content{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+    background: #5C5F71;
+  overflow: hidden;
+  position: fixed;
+}
+.grayTip{
+  width: 100%;
+  height: 100rpx;
+  background: #5C5F71;
+  display: flex;
+  flex-direction: row;
+}
+.avator{
+  height: 60rpx;
+  width: 60rpx;
+  line-height: 100rxp;
+  margin-top: 19rpx;
+  margin-left: 30rpx;
+  border-radius: 30rpx;
+  border: 2rpx solid #fff;
+}
+.anchorName{
+  font-size: 32rpx;
+  color: #fff;
+  margin-left: 10rpx;
+  line-height: 100rpx;
+}
+.attention{
+  position: absolute;
+  background: #E3656F;
+  height: 60rpx;
+  width: 120rpx;
+
+  border-radius: 30rpx;
+  color: #fff;
+  font-size: 28rpx;
+  text-align: center;
+  line-height: 60rpx;
+  right:20rpx;
+  top:720rpx;
+}
+.attentioned{
+  position:absolute;
+  background:#fff;
+  height:60rpx;
+  width:120rpx;
+  color: #f6f6f6;
+
+  border-radius:30rpx;
+  background-color: rgba(256, 256, 256, .1);
+  font-size:28rpx;
+  text-align:center;
+  line-height:60rpx;
+  box-sizing:border-box;
+  border:2rpx solid #f6f6f6;
+  right:20rpx;
+  top:720rpx;
+
+}
+.livePage{
+  width: 100%;
+  height:630rpx;
+  margin-bottom: 0rpx;
+  background: #333333;
+}
+.oprateView{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height:380rpx;
+  background: #5C5F71;
+  display: flex;
+  flex-direction: row;
+}
+.bulletView{
+  display: inline-flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  padding: 10rpx 10rpx 0 30rpx;
+  width: 550rpx;
+  height: 370rpx;
+  font-size:28rpx;
+}
+.tipView{
+  color: #fff;
+   
+}
+.name{
+  color: #FF4D5B;
+  margin-bottom: 10rpx;
+  line-height:35rpx;
+}
+.bulletContent{
+  color: #fff;
+  margin-left: 20rpx;
+  word-wrap:break-word;
+  line-height: 30rpx;
+
+}
+.buyInfo{
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  line-height: 30rpx;
+  background: #9b9b9b;
+  border-radius: 16rpx;
+  color: #FF4D5B;
+  font-size: 20rpx;
+  margin-bottom:10rpx;
+
+}
+.dynamicState{
+  color: #ffffff;
+  margin-left: 20rpx;
+  word-wrap:break-word;
+}
+
+
+
+
+.absoluteView{
+  height: 100%;
+  width: 110rpx;
+  margin-left: 90rpx;
+  display: flex;
+  flex-direction: column;
+}
+.goodSpecial{
+  margin-top: 70rpx;
+  width: 50rpx;
+  height: 240rpx;
+  background: #E3656F;
+  color: #fff;
+  font-size: 28rpx;
+  border-radius:30rpx 0 0 30rpx;
+  line-height: 40rpx;
+  margin-left: 60rpx;
+}
+.goodWord{
+  width: 28rpx;
+  margin-top: 40rpx;
+  margin-left: 12rpx;
+}
+.stateView{
+  height: 80rpx;
+  width: 80rpx;
+  border-radius: 40rpx;
+  background: #999;
+  position:absolute;
+  bottom:20rpx;
+}
+.stateImg{
+  width: 40rpx;
+  height: 40rpx;
+  margin: 20rpx 0 0 20rpx;
+}
+
+/* 弹幕组件 */
+.bulletEditView{
+  position: absolute;
+  left: 0;
+  bottom: 0rpx;
+  z-index: 9;
+  width: 100%;
+  height: 100rpx;
+  /* background: #747784; */
+  background-color: rgba(116, 119, 132, .9);
+  display: flex;
+  flex-direction: row;
+}
+.bulletEditeContent{
+  margin: 10rpx 0  10rpx 30rpx;
+  height: 80rpx;
+  width: 560rpx;
+  border-radius: 40rpx;
+  background: #BDC0C3;
+  display: flex;
+  flex-direction: row;
+}
+.colorMamnageSlider{
+
+  margin:auto 10rpx;
+}
+.bulletInput{
+  height: 40rpx;
+  width: 350rpx;
+  margin-top: 15rpx;
+  margin-left: 20rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+.sendBullet{
+  margin-top: 20rpx;
+  margin-left: 20rpx;
+  height: 60rpx;
+  width: 90rpx;
+  background: #E3656F;
+  color: #fff;
+  font-size: 28rpx;
+  line-height: 60rpx;
+  text-align: center;
+  border-radius: 10rpx;
+}
+
+/* 向左画出来的商品列表组件 */
+.goodListView{
+  position: absolute;
+  z-index: 90;
+  bottom: 0rpx;
+  left: 750rpx;
+  width: 750rpx;
+  background:transparent;
+  background-color: rgba(67, 68, 78, .9);
+  height: 484rpx;
+  display: flex;
+  flex-direction: row;
+  box-shadow:0 0 6rpx 6rpx gray;
+}
+.goodListScroll{
+  width: 670rpx;
+  height: 454rpx;
+  white-space: nowrap;
+
+}
+.closeGoodSpecial{
+  position: relative;
+  width: 50rpx;
+  height: 200rpx;
+  background: #E3656F;
+  top: 124rpx;
+  left: 0rpx;
+  margin-right: 30rpx;
+  text-align:center;
+  color:#fff;
+  font-size:28rpx;
+  border-radius: 0 30rpx 30rpx 0;
+  padding-top: 45rpx;
+
+}
+.goodImageView{
+  position: relative;
+  display: inline-flex;
+  height: 240rpx;
+  margin-top: 124rpx;
+  width: 240rpx;
+  background: #fff;
+  margin-right: 20rpx;
+  border-radius: 10rpx;
+}
+.goodDetail{
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  width: 474rpx;
+  background: #eee;
+  height:824rpx;
+
+}
+.goodView{
+  height: 220rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border:2rpx solid #f6f6f6;
+  margin-bottom: 20rpx;
+}
+.goodImg{
+height:160rpx;
+width:215rpx;
+margin:30rpx 20rpx 10rpx 30rpx;
+
+}
+.introView{
+  margin-top: 30rpx;
+  font-size: 28rpx;
+  color: #333;
+  width: 400rpx;
+  height: 160rpx;
+  display: flex;
+  flex-direction: column;
+}
+.goodDetailText{
+font-size:20rpx;
+color:#333;
+width:263rpx;
+height:46rpx;
+text-overflow:ellipsis;
+overflow:hidden;
+flex-wrap:wrap;
+white-space:pre-line;
+word-wrap:break-word;
+word-break:break-all;
+margin-top:30rpx;
+
+}
+.price{
+  margin-top: 30rpx;
+  font-size: 36rpx;
+  color: #E3656F;
+}
+.size{
+  width: 100%;
+  font-size: 28rpx;
+  color: #999;  
+}
+.size-tip{
+  margin: 0rpx auto 20rpx 30rpx;
+}
+.selectButView{
+  width: 100%;
+  font-size: 28rpx;
+  
+
+}
+.butSelected{
+  height: 60rpx;
+  color: #E3656F;
+  margin-left: 30rpx;
+  line-height: 58rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  margin-bottom:10rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  padding:0 8rpx;
+  border: 1px solid #E3656F;
+  box-sizing:border-box; 
+}
+.butNotSelected{
+  height: 60rpx;
+  border: 1px solid #999; 
+  color: #666;
+  margin-left: 30rpx;
+  line-height: 58rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  margin-bottom:10rpx;
+  white-space: nowrap;
+  padding:0 8rpx;
+  box-sizing:border-box;
+}
+.cannotSelected{
+  background: #D8D8D8;
+  height: 60rpx;
+  color: #fff;
+  margin-left: 30rpx;
+  line-height: 60rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  margin-bottom:10rpx;
+  padding:0 10rpx;
+
+}
+.CountView{
+  width: 270rpx;
+  border-radius: 10rpx;
+  padding-left: 30rpx;
+  height: 60rpx;
+  display: flex;
+  flex-direction: row;
+}
+.CountView-Count{
+  width: 90rpx;
+  height: 60rpx;
+  color: #999;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 28rpx;
+}
+.decrease{
+  margin: auto 0;
+  width:30rpx;
+  height:27rpx;
+
+}
+.buyView{
+  height: 85rpx;
+  width: 100%;
+  margin-top: 20rpx;
+  display: flex;
+  flex-direction: row;
+  font-size: 28rpx;
+}
+.addToCaft{
+  margin-left:20rpx;
+  width:200rpx;
+  border:1rpx solid #E3656F;
+  height:80rpx;
+  border-radius:10rpx;
+  color:#E3656F;
+  line-height:80rpx;
+  text-align:center;
+
+}
+.buyNow{
+  margin-left:30rpx;
+  width:200rpx;
+  border:1rpx solid #E3656F;
+  background:#E3656F;
+  height:80rpx;
+  border-radius:10rpx;
+  color:#fff;
+  line-height:80rpx;
+  text-align:center;
+
+}
+.caftImg{
+  margin-left:30rpx;
+  width:40rpx;
+  height:43rpx;
+  margin-top:10rpx;
+}
+.bulletWord{
+  font-size: 28rpx;
+  color: #fff;
+  position: absolute;
+  left: 750rpx;
+  z-index: 99;
+  white-space: nowrap;
+}
+.aon{
+position: absolute;
+white-space:nowrap;/* 防止向下换行*/
+}
+@keyframes first{
+  from{left: 100%; }
+  to{left: -100%;}
+}
+/*swtich样式-start*/
+/*swtich整体大小*/
+.wx-switch-input{
+  width:100rpx !important;
+  height:64rpx !important;
+}
+/*白色样式（false的样式）*/
+.wx-switch-input::before{
+  width:60rpx !important;
+  height: 60rpx !important;
+}
+/*绿色样式（true的样式）*/
+.wx-switch-input::after{
+  width: 60rpx !important;
+  height: 60rpx !important;
+}
+/*swtich样式end*/
+.closeDetailWindow{
+  width:40rpx;
+  height:40rpx;
+  position:absolute;
+  right:10rpx;
+  top:10rpx;
+
+}
+.coverBulletView{
+  position:absolute;
+  top:100rpx;
+  right:0;
+  width:474rpx;
+  height:500rpx;
+
+}
+.carftNum{
+  color: #fff;
+  background: #E3656F;
+  height: 44rpx;
+  width: 44rpx;
+  border-radius: 22rpx;
+  border: 2rpx solid #fff;
+  line-height: 44rpx;
+  text-align: center;
+  font-size: 22rpx;
+}
+.goodListView{
+  height: 824rpx;
+  width: 276rpx;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.goodListView image:nth-child(1){
+  margin:20rpx 28rpx 0 28rpx;
+  width:220rpx;
+  height:220rpx;
+}
+.goodListView image:nth-child(2){
+  width:50rpx;
+  height:50rpx;
+  z-index:9;
+  float:right;
+  position:absolute;
+  right:29rpx;
+  margin-top:20rpx;
+}
+.anchorNameAndImg{
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  top: 20rpx;
+  left:290rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  background-color: rgba(120, 120, 120, 0.65); 
+  padding-right: 20rpx;
+}
+.anchorNameAndImgimage{
+  height: 60rpx;
+  width: 60rpx;
+  border-radius: 30rpx;
+  right: 200rpx;
+}
+.anchorNameAndImgname{ 
+  height: 60rpx;
+  line-height: 60rpx;
+  padding-left: 10rpx;
+  color: #f6f6f6;
+  font-size: 24rpx;
+}
+.liveplayer{
+  width:474rpx;
+  height:824rpx;
+  position:absolute;
+  right:0;top:0;
+  overflow-x:hidden !important;
+  overflow-y:hidden !important;
+  box-shadow:0 0 6rpx 6rpx gray;
+
+}
+.realplayer{
+  height: 100%;
+  width: 100%;
+  background: #f00;
+  overflow-x:hidden !important;
+  overflow-y:hidden !important;
+  line-height: 100%;
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+}
+.rowViewCell{
+  display: flex;
+  width: 500rpx;
+  border: 1rpx solid red;
+  flex-wrap: wrap;
+   word-break:break-all;
+}

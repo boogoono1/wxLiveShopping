@@ -1,0 +1,2 @@
+<!--pages/serviceHelp/serviceHelp.wxml-->
+<web-view src="https://share.boogoo.tv/page/serviceHelp.html"></web-view>

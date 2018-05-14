@@ -1,0 +1,62 @@
+/* pages/recharge/recharge.wxss */
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 200rpx;
+  margin: 2rpx 0;
+  background-color: #fff;
+}
+
+.header .num {
+  font-size: 72rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.header text {
+  font-size: 28rpx;
+  color: #f1a244;
+}
+
+.main {
+  padding: 60rpx 30rpx;
+  background-color: #fff;
+}
+
+.main .title {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.main .box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main .recharge {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30rpx;
+  justify-content: center;
+  align-items: center;
+  width: 330rpx;
+  height: 146rpx;
+  box-sizing: border-box;
+  border: 2rpx solid #f1a244;
+  border-radius: 16rpx;
+}
+
+.main .recharge .money {
+  font-size: 40rpx;
+  color: #f1a244;
+}
+
+.main .recharge .yellowDiamondNum {
+  font-size: 24rpx;
+  color: #f1a244;
+}

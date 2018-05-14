@@ -1,0 +1,16 @@
+<!--pages/yellowDiamond/yellowDiamond.wxml-->
+<view class='box'>
+ <image src='../../utils/image/pinkbg.png' class='photo-bg'></image>
+  <image src='../../utils/image/yellowbg-2.png' class='photo-bg-2'></image>
+<view class='img'>
+<image class='diamond' src='../../utils/image/yellow.png'></image>
+</view>
+<view class='content'>
+<text class='num'>{{num}}</text>
+<text class='text'>黄钻</text>
+</view>
+<view class='operation'>
+<view class='recharge' bindtap='call'>去打Call</view>
+<view class='play-tour' bindtap='recharge'>充值</view>
+</view>
+</view>

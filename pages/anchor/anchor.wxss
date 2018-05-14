@@ -1,0 +1,36 @@
+/* pages/anchor/anchor.wxss */
+.box {
+  margin-top: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 750rpx;
+  flex-wrap: wrap;
+}
+.load{
+  font-size: 28rpx;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box .box-item {
+  width: 374rpx;
+  height: 420rpx;
+}
+
+.box .box-item image {
+  width: 374rpx;
+  height: 340rpx;
+}
+
+.box .box-item .nickname {
+  margin-left: 22rpx;
+  font-size: 28rpx;
+  width: 330rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #333;
+  font-weight: bold;
+}
