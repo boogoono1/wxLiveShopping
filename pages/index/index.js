@@ -6,6 +6,7 @@ Page({
     height:0,
     pageindex:1,//当前页数
     currentLoading:false,
+    isFill:false,
     hoturl: util.image('fire.png')
   },
   onLoad(options){
