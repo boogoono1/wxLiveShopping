@@ -3,7 +3,7 @@ import util from "../../utils/util"
 import Base64 from '../../utils/base64/base64.modified';
 var iosProvinceS = [];
 var iosCityS = [];
-
+let app=getApp();
 Page({
   /**
    * 页面的初始数据
@@ -17,7 +17,7 @@ Page({
       addressid: 0
     },
     alterAddressData: {},//修改地址的地址模型
-    state: 1,//地址默认状态
+    state: 0,//地址默认状态
     receivingAddressDataList: [],
     anchorInfo: [],
     orderInfo: [],
@@ -56,7 +56,14 @@ Page({
     // isEditeAdd:true,
     DetailedSite: '',//收货详细地址
     recipients: '',//收件人
-    isHidden:false
+    isHidden: false,
+    cartList: [],
+    selectCouponIndex: -1,
+    phone: '',
+    selectproviceid: '',
+    selectcityid: '',
+    isSwitch:false,
+    isFill:false
   },
   bindMultiPickerColumnChange: function (e) {
     var multycolumn = e.detail.column;//选中的列
@@ -95,15 +102,11 @@ Page({
 
     this.setData(data);
   },
+  //手机号
   bindKeyInput(e) {
-    let  phoneTest = /^1(3|4|5|7|8)\d{9}$/;
-    let  phone = e.detail.value
-    if (phone.trim().length == 11) {
-      if (phoneTest.test(phone)) {
-        this.phone = phone;
-      }
-    }
-
+    this.setData({
+      phone: e.detail.value
+    })
   },
   /**
        * 收件人
@@ -132,13 +135,20 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if (app.globalData.isIphoneX){
+       this.setData({
+         isFill:true
+       })
+    }
+    util.showLoad('正在生成订单...');
+    let _data = this.data;
     if (options.cartList) {
-      let cartList = JSON.parse(options.cartList)
+      _data.producttype = 1;
+      _data.cartList = JSON.parse(options.cartList);
+
       this.initData(2);
     }
     else {
-      let _data = this.data;
-
       _data.productid = options.productid
       _data.skuid = options.skuid // 18646
       _data.producttype = options.producttype // 18646
@@ -165,11 +175,14 @@ Page({
       }
 
       this.initData(1);
-      this.getAddressInfo();
+
     }
 
+    this.getAddressInfo();
+    util.hideLoad();
   },
-
+  onShow: function () {
+  },
   /**
    * 初始化数据
    * 1 常规进入
@@ -182,7 +195,7 @@ Page({
 
 
     if (index == 1) {
-      this.data.orderInfo = [{
+      _this.orderInfo = [{
         anchorid: _this.anchorid, // 主播id,从url上截取
         headerimg: "", // 主播头像
         anchorname: "", // 主播名称
@@ -200,9 +213,31 @@ Page({
       this.getCoupon(this.data.productid);
 
     } else if (index == 2) {
+      util.get('/api/Product/CreateProductOrderTime', {
+        cartlist: _this.cartList.join(',')
+      }).then(res => {
+        if (res.data.code == 1000) {
+          let couponList = [];
+          for (let i = 0; i < res.data.data.length; i++) {
+            _this.orderInfo.push({
+              anchorid: res.data.data[i].anchorid,
+            })
+            this.getAnchorInfo(i);
+          }
 
+          for (let i = 0; i < res.data.data.length; i++) {
+            for (let j = 0; j < res.data.data[i].prolist.length; j++) {
+              this.getProductInfo(i, j, res.data.data[i].prolist[j].productid, res.data.data[i].prolist[j].skuid, res.data.data[i].prolist[j].attrdesc, res.data.data[i].prolist[j].num, res.data.data[i].prolist[j].cartid);
+              couponList.push(res.data.data[i].prolist[j].productid);
+            }
+          }
+          this.getCoupon(couponList.join(','));
+        }
+        else {
+          util.showToast('忘了好像出了小差')
+        }
+      })
     }
-
 
     this.getcity();
   },
@@ -214,10 +249,12 @@ Page({
     for (let i = 0; i < this.data.orderInfo.length; i++) {
       this.data.orderInfo[i].subtotal = 0.00;
       for (let j = 0; j < this.data.orderInfo[i].data.length; j++) {
-        this.data.orderInfo[i].subtotal += this.data.orderInfo[i].data[j].price * this.data.orderInfo[i].data[j].num
+        this.data.orderInfo[i].subtotal += parseFloat(this.data.orderInfo[i].data[j].price * this.data.orderInfo[i].data[j].num);
       }
-      this.data.total += this.data.orderInfo[i].subtotal;
+      this.data.total += parseFloat(this.data.orderInfo[i].subtotal);
+      this.data.orderInfo[i].subtotal = this.data.orderInfo[i].subtotal.toFixed(2);
     }
+    this.data.total = this.data.total.toFixed(2);
     this.setData({
       total: this.data.total,
       orderInfo: this.data.orderInfo
@@ -227,9 +264,9 @@ Page({
    * 获取主播信息 
    */
   getAnchorInfo(index) {
+    let anchorid = this.data.orderInfo[index].anchorid;
     util.get('/api/Anchor/AnchorMessage', {
-      userid: util.getUserid(),
-      anchorid: this.data.anchorid
+      anchorid: anchorid
     }).then((res) => {
       if (res.data.code == 1000) {
         if (this.data.orderInfo[index] == undefined) {
@@ -252,56 +289,120 @@ Page({
   /**
    * 获取商品信息
    */
-  getProductInfo(index) {
-    util.get('/api/Product/ProductInfo', {
-      productid: this.data.productid,
-      type: this.data.producttype
-    }).then(res => {
-      if (res.data.code == 1000) {
-        let tempData = res.data.data;
-        if (this.data.orderInfo[index] == undefined) {
-          this.data.orderInfo[index] = {
-            data: []
-          };
-        }
-        this.data.orderInfo[index].data.push({
-          productid: tempData.productid, //商品id
-          productname: tempData.name, //商品名称
-          productimg: tempData.infoimg[0], //商品图片
-          skutext: '', //sku名称
-          skuid: this.data.skuid, //skuid
-          num: parseInt(this.data.buynumber), //购买个数
-          price: tempData.price, //价格
-          cartid: 0, //默认设置0
-          couponnumber: ''
-        })
-
-        util.get('/api/Product/ProductPrice', {
-          productid: this.data.productid,
-          type: this.data.producttype
-        }).then(res => {
-          if (res.data.code == 1000) {
-            tempData = res.data.data;
-            for (let i = 0; i < tempData.priceInfo.length; i++) {
-              if (tempData.priceInfo[i].skuid == this.data.skuid) {
-                let tempN = this.data.orderInfo[index].data.length - 1;
-                this.data.orderInfo[index].data[tempN].skutext = tempData.priceInfo[i].attrdesc
-                this.data.orderInfo[index].data[tempN].productimg = tempData.priceInfo[i].imgurl
-                this.data.orderInfo[index].data[tempN].stock = tempData.priceInfo[i].stock
-                this.data.orderInfo[index].data[tempN].price = tempData.priceInfo[i].price
-              }
-            }
-
-            this.calculation(); // 计算价格
-
-            this.setData({
-              orderInfo: this.data.orderInfo
-            })
+  getProductInfo(index, productIndex = -1, productid, skuid, attrdesc, num, cartid) {
+    console.log(index, productIndex, productid, skuid, attrdesc, num, cartid)
+    if (productIndex != -1) {
+      util.get('/api/Product/ProductInfo', {
+        productid: productid,
+        type: this.data.producttype
+      }).then(res => {
+        if (res.data.code == 1000) {
+          let tempData = res.data.data;
+          if (this.data.orderInfo[index] == undefined) {
+            this.data.orderInfo[index] = {
+              data: []
+            };
           }
 
-        })
-      }
-    })
+          if (this.data.orderInfo[index].data == undefined) {
+            this.data.orderInfo[index] = {
+              data: []
+            };
+          }
+
+          this.data.orderInfo[index].data.push({
+            productid: tempData.productid, //商品id
+            productname: tempData.name, //商品名称
+            productimg: tempData.infoimg[0], //商品图片
+            skutext: attrdesc, //sku名称
+            skuid: skuid, //skuid
+            num: parseInt(num), //购买个数
+            price: tempData.price, //价格
+            cartid: cartid, //默认设置0
+            classid: tempData.classid,
+            couponnumber: ''
+          })
+
+          util.get('/api/Product/ProductPrice', {
+            productid: productid,
+            type: this.data.producttype
+          }).then(res => {
+            if (res.data.code == 1000) {
+              tempData = res.data.data;
+              for (let i = 0; i < tempData.priceInfo.length; i++) {
+                if (tempData.priceInfo[i].skuid == this.data.skuid) {
+                  let tempN = this.data.orderInfo[index].data.length - 1;
+                  this.data.orderInfo[index].data[tempN].skutext = tempData.priceInfo[i].attrdesc
+                  this.data.orderInfo[index].data[tempN].productimg = tempData.priceInfo[i].imgurl
+                  this.data.orderInfo[index].data[tempN].stock = tempData.priceInfo[i].stock
+                  this.data.orderInfo[index].data[tempN].price = tempData.priceInfo[i].price
+                }
+              }
+
+              this.calculation(); // 计算价格
+
+              this.setData({
+                orderInfo: this.data.orderInfo
+              })
+            }
+
+          })
+        }
+      })
+    }
+    else {
+      util.get('/api/Product/ProductInfo', {
+        productid: this.data.productid,
+        type: this.data.producttype
+      }).then(res => {
+        if (res.data.code == 1000) {
+
+          let tempData = res.data.data;
+          if (this.data.orderInfo[index] == undefined) {
+            this.data.orderInfo[index] = {
+              data: []
+            };
+          }
+          this.data.orderInfo[index].data.push({
+            productid: tempData.productid, //商品id
+            productname: tempData.name, //商品名称
+            productimg: tempData.infoimg[0], //商品图片
+            skutext: '', //sku名称
+            skuid: this.data.skuid, //skuid
+            num: parseInt(this.data.buynumber), //购买个数
+            price: tempData.price, //价格
+            cartid: 0, //默认设置0
+            classid: tempData.classid,
+            couponnumber: ''
+          })
+
+          util.get('/api/Product/ProductPrice', {
+            productid: this.data.productid,
+            type: this.data.producttype
+          }).then(res => {
+            if (res.data.code == 1000) {
+              tempData = res.data.data;
+              for (let i = 0; i < tempData.priceInfo.length; i++) {
+                if (tempData.priceInfo[i].skuid == this.data.skuid) {
+                  let tempN = this.data.orderInfo[index].data.length - 1;
+                  this.data.orderInfo[index].data[tempN].skutext = tempData.priceInfo[i].attrdesc
+                  this.data.orderInfo[index].data[tempN].productimg = tempData.priceInfo[i].imgurl
+                  this.data.orderInfo[index].data[tempN].stock = tempData.priceInfo[i].stock
+                  this.data.orderInfo[index].data[tempN].price = tempData.priceInfo[i].price
+                }
+              }
+
+              this.calculation(); // 计算价格
+
+              this.setData({
+                orderInfo: this.data.orderInfo
+              })
+            }
+          })
+        }
+      })
+    }
+
   },
   /**
    * 获取优惠券
@@ -362,17 +463,19 @@ Page({
           res.data.data.push(tempCouponList);
         }
 
-        this.couponListData = res.data.data
+        this.data.couponListData = res.data.data
 
         for (let i = 0; i < this.data.orderInfo.length; i++) {
           this.data.orderInfo[i].select = -1;
-          if (this.couponListData[i].length > 0) {
+          if (this.data.couponListData[i].length > 0) {
             this.data.orderInfo[i].hasCoupon = true;
           }
           else {
             this.data.orderInfo[i].hasCoupon = false;
           }
         }
+
+        console.log(this.data.couponListData)
       }
     })
   },
@@ -383,9 +486,9 @@ Page({
     util.get('/api/product/AddressInfo', {
     }).then((res) => {
       if (res.data.code == 1000) {
-        if (res.data.data.length!=0){
-          this.data.isHidden=true;
-        }else{
+        if (res.data.data.length != 0) {
+          this.data.isHidden = true;
+        } else {
           this.data.isHidden = false;
         }
         this.setData({
@@ -439,8 +542,14 @@ Page({
    * 提交订单
    */
   submitOrder: function () {
-    util.showLoad('正在生成订单');
-    this.createOrder();
+    if (this.data.receivingAddressData.addressid) {
+      util.showLoad('正在生成支付订单...');
+      this.createOrder();
+    }
+    else {
+      util.showToast('请先选择收获地址');
+      this.changeUserInfo();
+    }
   },
   /**
    * 防伪签名
@@ -465,6 +574,7 @@ Page({
     for (let i = 0; i < this.data.orderInfo.length; i++) {
       var obj = {
         anchorid: this.data.orderInfo[i].anchorid,
+        couponNumber: this.data.orderInfo[i].couponnumber,
         data: []
       }
       for (let j = 0; j < this.data.orderInfo[i].data.length; j++) {
@@ -498,12 +608,25 @@ Page({
       sources: sources,
       enterid: this.data.enterid,
       entertype: this.data.entertype,
+      ordertype: 1,
       skuinfo: JSON.stringify(skuinfo)
     }).then(res => {
       if (res.data.code == 1000) {
         util.hideLoad();
         this.payment(res.data.data[0].orderid);
-      } else {
+      }
+      else if (res.data.code == 7003) {
+        util.showToast({
+          title: "优惠卷已使用！"
+        })
+      }
+      else if (res.data.code == 7000) {
+        util.showToast({
+          title: "库存不足！"
+        })
+      }
+      else {
+        console.log(res);
         util.showToast({
           title: "生成订单失败！"
         })
@@ -528,6 +651,7 @@ Page({
           complete: function (res) {
             if (res.errMsg == 'requestPayment:ok') {
               util.showToast({ title: '支付成功' });
+              util.pageJump('user')
             }
             else if (res.errMsg == 'requestPayment:fail cancel') {
               util.showToast({ title: '用户取消支付' });
@@ -541,21 +665,114 @@ Page({
     })
   },
   /**
-   * 点击弹出选择优惠券
-   * 获取点击的主播订单index值
+   * 展开优惠券列表
    */
   selectCoupon: function (e) {
-    this.setData({
-      selectCouponIndex: e.target.dataset.couponindex
-    })
-    this.showView();
+    this.showView(e.currentTarget.dataset.couponindex);
+    this.showCoupon(e.currentTarget.dataset.couponindex);
   },
   /**
-   * 选择优惠券后的带回参数事件couponInfo
-   * 'decreasePrice':
-   * 'type':
+   * 显示优惠券
    */
-  showView() {
+  showCoupon(index) {
+    this.data.selectCouponIndex = index;
+    let tempList = this.data.couponListData[index];
+
+    for (let i = 0; i < tempList.length; i++) {
+      tempList[i].start = util.formatTimedate(tempList[i].validperiodstart).substring(5, 10).split('/').join('.')
+      tempList[i].end = util.formatTimedate(tempList[i].validperiodend).substring(5, 10).split('/').join('.')
+
+      if (this.data.orderInfo[index].select == i) {
+        tempList[i].select = true;
+      }
+      else {
+        tempList[i].select = false;
+      }
+
+      if (tempList[i].coupontype == 3) {
+        let total = 0;
+        for (let j = 0; j < this.data.orderInfo[index].data.length; j++) {
+          total += parseInt(this.data.orderInfo[index].data[j].num) * parseFloat(this.data.orderInfo[index].data[j].price);
+        }
+        if (parseFloat(total) - 0.01 > parseFloat(tempList[i].minPrice)) {
+          tempList[i].state = true;
+        }
+        else {
+          tempList[i].state = false
+        }
+      }
+      else {
+        tempList[i].state = true;
+      }
+      for (let j = 0; j < this.data.orderInfo.length; j++) {
+        if (this.data.orderInfo[j].couponnumber == tempList[i].couponnumber) {
+          tempList[i].state = false;
+          if (this.data.orderInfo[this.data.selectCouponIndex].couponnumber == tempList[i].couponnumber) {
+            tempList[i].state = true;
+          }
+        }
+      }
+
+    }
+    this.data.couponInfoList = tempList;
+    this.setData({
+      couponInfoList: this.data.couponInfoList
+    })
+
+  },
+  /**
+   * 选择优惠券
+   */
+  selectSingleCoupon(e) {
+    if (e.currentTarget.dataset.state) {
+      let isCancel = this.data.orderInfo[this.data.selectCouponIndex].couponnumber == this.data.couponInfoList[e.currentTarget.dataset.couponindex].couponnumber;
+      this.data.orderInfo[this.data.selectCouponIndex].couponnumber = this.data.couponInfoList[e.currentTarget.dataset.couponindex].couponnumber;
+
+      this.data.orderInfo[this.data.selectCouponIndex].select = e.currentTarget.dataset.couponindex;
+
+      this.data.orderInfo[this.data.selectCouponIndex].subtotal = 0.00;
+
+      for (let i = 0; i < this.data.orderInfo[this.data.selectCouponIndex].data.length; i++) {
+        this.data.orderInfo[this.data.selectCouponIndex].subtotal += parseFloat(this.data.orderInfo[this.data.selectCouponIndex].data[i].price * this.data.orderInfo[this.data.selectCouponIndex].data[i].num);
+      }
+
+      if (isCancel) {
+        this.data.orderInfo[this.data.selectCouponIndex].couponnumber = "";
+        this.data.orderInfo[this.data.selectCouponIndex].select = -1;
+      }
+      else {
+
+        if (this.data.couponInfoList[e.currentTarget.dataset.couponindex].coupontype == 1) {
+          this.data.orderInfo[this.data.selectCouponIndex].subtotal *= parseFloat(this.data.couponInfoList[e.currentTarget.dataset.couponindex].price / 10).toFixed(2);
+        }
+        else if (this.data.couponInfoList[e.currentTarget.dataset.couponindex].coupontype == 2) {
+          this.data.orderInfo[this.data.selectCouponIndex].subtotal -= parseFloat(this.data.couponInfoList[e.currentTarget.dataset.couponindex].price).toFixed(2);
+        }
+        else if (this.data.couponInfoList[e.currentTarget.dataset.couponindex].coupontype == 3) {
+          this.data.orderInfo[this.data.selectCouponIndex].subtotal -= parseFloat(this.data.couponInfoList[e.currentTarget.dataset.couponindex].price).toFixed(2);
+        }
+
+        this.data.orderInfo[this.data.selectCouponIndex].subtotal = this.data.orderInfo[this.data.selectCouponIndex].subtotal < 0.01 ? 0.01 : this.data.orderInfo[this.data.selectCouponIndex].subtotal.toFixed(2);
+      }
+
+      let sum = 0;
+      for (let i = 0; i < this.data.orderInfo.length; i++) {
+        console.log(this.data.orderInfo[i].subtotal)
+        sum = parseFloat(this.data.orderInfo[i].subtotal) * 100 + sum;
+      }
+      this.data.total = (sum / 100).toFixed(2);
+
+      this.setData({
+        orderInfo: this.data.orderInfo,
+        total: this.data.total
+      })
+      this.hideModal();
+    }
+    else {
+      util.showToast('无法使用该优惠券')
+    }
+  },
+  showView(index) {
     // 显示遮罩层
     var animation = wx.createAnimation({
       duration: 200,
@@ -613,7 +830,6 @@ Page({
     }
   },
   changeUserInfo() {
-    console.log('onk')
     //this.getAddressInfo();
     this.setData({
       showSelectAdd: true,
@@ -633,11 +849,11 @@ Page({
   //var iosCityS = [];
   save() {
     let phoneTest = /^1(3|4|5|7|8)\d{9}$/;
-    var selectproviceid = 0
-    var selectcityid = 0
-    var DetailedSite = this.data.DetailedSite;
-    var recipients = this.data.recipients
+    let selectproviceid = 0
+    let selectcityid = 0
+
     for (let i = 0; i < iosProvinceS.length; i++) {
+
       if (iosProvinceS[i].value == this.data.region[0]) {
         selectproviceid = iosProvinceS[i].id
         break;
@@ -650,21 +866,21 @@ Page({
       }
     }
     //新建
-    if(this.data.idAdd==0){
-      if (this.data.recipients == "" || this.data.alterAddressData.addressid == "" || this.phone == "" || this.data.DetailedSite == "" || selectcityid == "") {
+    if (this.data.idAdd == 0) {
+      if (this.data.recipients == "" || selectproviceid == "" || this.data.phone == "" || this.data.DetailedSite == "" || selectcityid == "") {
         util.showToast({
           title: '请填写完整信息'
         })
-      } else if (!phoneTest.test(this.phone)) {
+      } else if (!phoneTest.test(this.data.phone)) {
         util.showToast({
           title: '手机格式不正确'
         })
-      }else {
+      } else {
         util.get('/api/product/EditAddress', {
-          addressid: this.data.alterAddressData.addressid,
-          name: recipients,
-          phone: this.phone,
-          address: DetailedSite,
+          addressid: selectproviceid,
+          name: this.data.recipients,
+          phone: this.data.phone,
+          address: this.data.DetailedSite,
           areaid: selectcityid,
           state: this.data.state,
           type: this.data.idAdd
@@ -676,36 +892,34 @@ Page({
           } else {
             console.log('修改地址失败：', res)
           }
-
         })
         this.getAddressInfo();
         this.setData({
           alterAddressData: {},
-          recipients:'',
-          DetailedSite:'',
+          recipients: '',
+          DetailedSite: '',
+          phone: '',
+          state: 0
         })
-        this.phone="";
       }
     }
     //编辑
-    else if(this.data.idAdd==1){
-      if (this.data.alterAddressData.name == "" || this.data.alterAddressData.detailaddress=="" || this.data.alterAddressData.phone == "" || this.data.alterAddressData.area.length==0 || this.data.alterAddressData.addressid==""){
+    else if (this.data.idAdd == 1) {
+      if (this.data.recipients == "" || selectproviceid == "" || this.data.phone == "" || this.data.DetailedSite == "" || selectcityid == "") {
         util.showToast({
           title: '请填写完整信息'
         })
-      }else if(this.phone!=undefined){
-          if (!phoneTest.test(this.phone)) {
+      } else if (!phoneTest.test(this.data.phone)) {
         util.showToast({
           title: '手机格式不正确'
         })
       }
-      }
-      else{
+      else {
         util.get('/api/product/EditAddress', {
-          addressid: this.data.alterAddressData.addressid,
-          name: recipients || this.data.alterAddressData.name ,
-          phone: this.phone || this.data.alterAddressData.phone,
-          address: DetailedSite || this.data.alterAddressData.detailaddress,
+          addressid: this.data.alterAddressData.addressid || '',
+          name: this.data.recipients || this.data.alterAddressData.name,
+          phone: this.data.phone || this.data.alterAddressData.phone,
+          address: this.data.DetailedSite || this.data.alterAddressData.detailaddress,
           areaid: selectcityid,
           state: this.data.state,
           type: this.data.idAdd
@@ -719,6 +933,13 @@ Page({
           }
         })
         this.getAddressInfo();
+        this.setData({
+          alterAddressData: {},
+          recipients: '',
+          DetailedSite: '',
+          phone: "",
+          state: 0
+        })
       }
     }
 
@@ -731,13 +952,15 @@ Page({
   /**关闭*/
   isClose() {
     this.setData({
-      isEdit: true
+      isEdit: true,
+      isSwitch:false
     })
   },
   /**返回 */
   isBack() {
     this.setData({
-      showSelectAdd: true
+      showSelectAdd: true,
+      isSwitch: false
     })
     this.setData({
       alterAddressData: {},
@@ -756,7 +979,8 @@ Page({
   gotoEdite(e) {
     var area = []//满足于联动存放地区的数组
     var addressItem = {}
-    addressItem = e.currentTarget.dataset.item
+    addressItem = e.currentTarget.dataset.item;
+    console.log(addressItem)
     var province = iosCityS.filter((item) => {
       return item.id == addressItem.areaid
     })
@@ -764,21 +988,28 @@ Page({
     var city = iosProvinceS.filter((item) => {
       return province[0].parentId == item.id
     })
-    area.push(province[0].value)
     area.push(city[0].value)
+    area.push(province[0].value)
+
     var alterAddressData = {}
     alterAddressData.name = addressItem.name
     alterAddressData.phone = addressItem.phone
     alterAddressData.detailaddress = addressItem.detailaddress
     alterAddressData.area = area
     alterAddressData.addressid = addressItem.addressid
-
+    console.log(addressItem.state)
     this.setData({
       isEdit: false,
       showSelectAdd: false,
       alterAddressData: alterAddressData,
       idAdd: 1,
-      region: area
+      region: area,
+
+      state: addressItem.state == '1' ? true : false,
+      isSwitch: addressItem.state == '1' ? true : false,
+      recipients: addressItem.name,
+      phone: addressItem.phone,
+      DetailedSite: addressItem.detailaddress
     })
   }
 })

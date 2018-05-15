@@ -1,11 +1,28 @@
 <!--pages/anchor/anchor.wxml-->
-<scroll-view scroll-y bindscrolltolower="lower" style='height:{{height}}px'>
+<view class='container' style="margin-bottom:{{isFill?'168':'100'}}rpx">
 <view class='box'>
 <view class='box-item' wx:for="{{anchorArr}}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}" bindtap='toJump' data-id='{{item.userid}}'>
   <image src='{{item.headurl}}'></image>
   <view class='nickname'>{{item.nickname}}</view>
 </view>
+
 </view>
   <view hidden='{{currentLoading}}' class='load'>加载中...</view>
-</scroll-view>
+</view>
 
+<!--底部-->
+<view class='footer' style="height:{{isFill?'168':'100'}}rpx">
+    <view class='tab' bindtap='toIndex'>
+       <image class='img' src='{{tabbarImg.tab1}}'></image> 
+      <view class='tab-name '>首页</view>
+    </view>
+    <view class='tab'>
+       <image class='img' src='{{tabbarImg.tab2}}'></image> 
+      <view class='tab-name active'>主播</view>
+    </view>
+    <view class='tab' bindtap='toUser'>
+       <image class='img' src='{{tabbarImg.tab3}}'></image> 
+      <view class='tab-name'>个人中心</view>
+    </view>
+    <view class='fill' wx:if="{{isFill}}"></view>
+</view>

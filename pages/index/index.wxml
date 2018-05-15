@@ -1,11 +1,14 @@
-<scroll-view scroll-y class="box" bindscrolltolower="lower" style='height:{{height}}px'>
+ <button open-type='getUserInfo' class='login-btn' bindgetuserinfo="login" wx:if='{{!isLogin}}'>
+</button> 
+<view class="box" style="margin-bottom:{{isFill?'168':'100'}}rpx">
   <view class='box-margin'>
-    <view class='box-item' wx:for="{{note}}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}" data-anchorid='{{item.userid}}' data-livestate='{{item.livestate}}' data-videoid='{{item.videoid}}' data-playaddress='{{item.playaddress}}' data-liveId='{{item.idx}}' bindtap='gotoLiveRoom'>
+    <view class='box-item' wx:for="{{note}}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}" data-anchorid='{{item.userid}}' data-livestate='{{item.livestate}}' data-videoid='{{item.videoid}}' data-playaddress='{{item.playaddress}}' data-liveId='{{item.idx}}'
+      bindtap='gotoLiveRoom'>
       <image src='{{item.barcoverurl}}' class='barcover'>
         <text class='state' wx:if="{{item.livestate==1}}">直播中</text>
         <text class='state' wx:else>录播</text>
       </image>
-      <view class='sign'>{{item.sign}}</view>
+      <view class='sign'>{{item.introduce}}</view>
       <view class='message'>
         <view class='anchor'>
           <image src='{{item.headurl}}' class='headurl'> </image>
@@ -19,4 +22,20 @@
     </view>
   </view>
   <view hidden='{{currentLoading}}' class='load'>加载中...</view>
-</scroll-view>
+</view>
+<!--底部-->
+<view class='footer' style="height:{{isFill?'168':'100'}}rpx">
+    <view class='tab'>
+       <image class='img' src='{{tabbarImg.tab1}}'></image> 
+      <view class='tab-name active'>首页</view>
+    </view>
+    <view class='tab' bindtap='toAnchor'>
+       <image class='img' src='{{tabbarImg.tab2}}'></image> 
+      <view class='tab-name'>主播</view>
+    </view>
+    <view class='tab' bindtap='toUser'>
+       <image class='img' src='{{tabbarImg.tab3}}'></image> 
+      <view class='tab-name'>个人中心</view>
+    </view>
+    <view class='fill' wx:if="{{isFill}}"></view>
+</view>

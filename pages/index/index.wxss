@@ -1,17 +1,36 @@
-.box-margin{
+.login-btn {
+  position: fixed;
+  left: 0;
+  z-index: 999999 !important;
+  top: 0;
+  border-radius: 0;
+  bottom: 0;
+  right: 0;
+  height: 100vh;
+  width: 100vh;
+  opacity: 0;
+  padding: 0;
+}
+.box{
+  margin-bottom: 100rpx;
+}
+
+.box-margin {
   display: flex;
   margin: 30rpx 20rpx 0;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
 }
-.load{
+
+.load {
   font-size: 28rpx;
   color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .box-margin .box-item {
   height: 420rpx;
   width: 346rpx;
@@ -115,4 +134,38 @@
   margin-left: 8rpx;
   font-size: 24rpx;
   color: #999;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0rpx;
+  display: inline-flex;
+  height: 100rpx;
+  width: 750rpx;
+  color: #333;
+  background-color: #fff;
+}
+.footer .fill{
+  height:68rpx;
+}
+.footer .tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100rpx;
+}
+
+.footer .tab .img {
+  height: 60rpx;
+  width: 60rpx;
+}
+
+.footer .tab .tab-name {
+  font-size: 28rpx;
+  color: #c0c0c9;
+}
+.footer .tab .active{
+  color: #E46569;
 }

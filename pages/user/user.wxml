@@ -38,3 +38,20 @@
     <text>{{ite.title}}</text>
   </view>
 </view>
+
+<!--底部-->
+<view class='footer' style="height:{{isFill?'168':'100'}}rpx">
+    <view class='tab' bindtap='toIndex'>
+       <image class='img' src='{{tabbarImg.tab1}}'></image> 
+      <view class='tab-name '>首页</view>
+    </view>
+    <view class='tab' bindtap='toAnchor'>
+       <image class='img' src='{{tabbarImg.tab2}}'></image> 
+      <view class='tab-name '>主播</view>
+    </view>
+    <view class='tab' >
+       <image class='img' src='{{tabbarImg.tab3}}'></image> 
+      <view class='tab-name active'>个人中心</view>
+    </view>
+    <view class='fill' wx:if="{{isFill}}"></view>
+</view>

@@ -75,6 +75,7 @@ Page({
     imgurl: "",
     attrshow: false,
     pI: {},
+    skuid:'',
     arrts: "",
     priceInfo: "",
 
@@ -85,13 +86,36 @@ Page({
    * https://app.boogoo.tv:444/api/LiveVideo/GetLiveVideoChatLog弹幕记录
    */
   onLoad: function (options) {
+    wx.setKeepScreenOn({
+      keepScreenOn: true,
+    })
     console.log(options)
     var that = this
-    that.setData({
+    var videoUrl = ''
+
+    util.get("/api/Anchor/AnchorVideosList", {
+      userid: util.getUserid(),
+      token: util.getToken(),
+      anchorid: options.anchorid
+    }).then((res) => {
+      if (res.data.code == "1000") {
+        console.log('获取到主播的视频', res.data.data[0].videolist)
+        var videolist = res.data.data[0].videolist
+        var video = videolist.filter((ele) => {
+          return ele.videoid == options.livevideoid
+        })
+        console.log('video', video)
+        videoUrl = video[0].playaddress
+        this.setData({
+          videoUrl: videoUrl,
+        })
+      }
+    })
+    this.setData({
       anchorid: options.anchorid,
-      videoUrl: options.videoUrl,
       livevideoid: options.livevideoid
     })
+    
     that.initData()
 
     page = this
@@ -109,8 +133,8 @@ Page({
         })
       }
     })
-    var livePlayerContext = wx.createLivePlayerContext('livePlayer', this)
   },
+
   onShow: function () {
     util.get('/api/LiveVideo/GetLiveVideoChatLog', {
       livevideoid: this.data.livevideoid
@@ -220,66 +244,16 @@ Page({
       }
     })
   },
-
-
   /**
-   * 从右侧伸出goodList
-   */
-  animationFromRightToLeft() {
-    var animation = wx.createAnimation({
-      duration: 200,
-      timingFunction: 'ease-in',
-      delay: 0
-    })
-    animation.translateX(-this.data.windowWidth).step()
-    this.setData({
-      selectedGoodListAnimation: animation.export()
-    })
-  },
-  animationBackToOrigin() {
-    var animation = wx.createAnimation({
-      duration: 1000,
-      timingFunction: 'ease-in'
-    })
-    animation.translateX(this.data.windowWidth).step()
-    this.setData({
-      selectedGoodListAnimation: animation.export()
-    })
-  },
-  /**
-   * 展开商品列表
-   */
-  openGoodList: function () {
-
-    this.setData({
-      selectedGoodListHidden: false,
-      goodSpecoalHidden: true
-    })
-    this.animationFromRightToLeft()
-  },
-  /**
-   * 收起商品列表
-   */
-  closeGoodList: function () {
-    var bulletH = (100 + Math.random(0, 500));
-    console.log(bulletH)
-
-    var bulletWordStyle = { 'top': '', '': '' }
-    this.animationBackToOrigin()
-
-    this.setData({
-      selectedGoodListHidden: true,
-      goodDetailHidden: true,
-      goodSpecoalHidden: false
-    })
-
-  },
-
+     * 向上打开商品的详情页面
+     * /api/Product/ProductPrice
+     */
   /**
      * 向上打开商品的详情页面
      * /api/Product/ProductPrice
      */
   openGoodDetail: function (e) {
+    console.log('dakaixingqingde', e)
     var that = this
     let listGoodIndex = e.currentTarget.dataset.productid
     let index = e.currentTarget.dataset.index
@@ -292,7 +266,9 @@ Page({
       }
 
     }
+
     console.log(listGoodIndex)
+
     that.setData({
       goodDetailHidden: false,
       goodCount: 1,
@@ -318,7 +294,7 @@ Page({
           for (let j = 0; j < attrValueList.length; j++) {
             paraObj.name = attrValueList[0].attrname
             paraObj.id = attrValueList[0].attrid
-            paraObj.upperid = arrts[i].attrupperid
+            paraObj.upperid = attrValueList[0].attrupperid
             if (j == 0) {
               attrValueList[j].selected = 1
             } else {
@@ -329,15 +305,33 @@ Page({
         }
         pI.productid = listGoodIndex
         pI.attribute = parama
-        console.log('piipipippiiiiiiii', pI)
-        that.setData({
-          goodParameters: arrts,
-          priceInfo: priceInfo,
-          price: price,
-          imgurl: goodImgurl,
-          pI: pI
-        })
 
+        //获取改变后的价格图像
+        let newSkuid = [];
+        for (let i = 0; i < parama.length; i++) {
+          newSkuid.push(parama[i].id);
+        }
+        //获得排列组合
+        let arrange = this.permute([], newSkuid);
+        let newArr = [];
+        for (let i = 0; i < arrange.length; i++) {
+          newArr = priceInfo.filter(ele => {
+            return ele.skuid == arrange[i].join(':')
+          });
+
+          if (newArr.length > 0) {
+            var skuid = newArr[0].skuid;
+            this.setData({
+              goodParameters: arrts,
+              priceInfo: priceInfo,
+              salesnum: newArr[0].stock,
+              price: newArr[0].price,
+              imgurl: newArr[0].imgurl,
+              skuid: skuid
+            })
+          }
+        }
+        console.log('piipipippiiiiiiii', pI)
       }
     })
     util.get('/api/Product/ProductInfo', {
@@ -353,7 +347,6 @@ Page({
         goodDetailData = res.data.data;
         that.setData({
           goodDetailData: goodDetailData,
-          salesnum: res.data.data.salesnum
         })
       }
     })
@@ -375,7 +368,6 @@ Page({
     let attrupperid = e.currentTarget.dataset.upperid
     let goodParameters = this.data.goodParameters
     var pI = this.data.pI
-    console.log('dainjideshihou', goodParameters)
     let priceInfo = this.data.priceInfo
 
     var paramid;
@@ -392,23 +384,70 @@ Page({
         selectAttrInfo[i].selected = 0
       }
     }
-    console.log('iiiiiiiiii' + paramid)
-    var price = priceInfo[paramid].price
-    var imgurl = priceInfo[paramid].imgurl
+    if (priceInfo[selectindex].stock == 0) {
+      util.showToast({ 'title': '库存不足' })
+      this.setData({
+        goodCount: 0,
+      })
+    } else {
+      this.setData({
+        goodCount: 1,
+      })
+    }
+
     var att = {}
-    att.name = selectAttrInfo[selectindex].attrname
-    att.id = selectAttrInfo[selectindex].attrid
-    att.upperid = attrupperid
+    att.name = selectAttrInfo[selectindex].attrname//属性名字
+    att.id = selectAttrInfo[selectindex].attrid//属性id
+    att.upperid = attrupperid//属性上层id
     pI.attribute[paramid] = att
     console.log('selectdata::::', pI)
-    this.setData({
-      goodParameters: goodParameters,
-      price: price,
-      imgurl: imgurl,
-      pI: pI
-    })
 
-    // console.log(e)
+    //获取改变后的价格图像
+    var attridArr = pI.attribute
+    let newSkuid = [];
+    for (let i = 0; i < attridArr.length; i++) {
+      newSkuid.push(attridArr[i].id);
+    }
+    //获得排列组合
+    let arrange = this.permute([], newSkuid);
+    let newArr = [];
+    for (let i = 0; i < arrange.length; i++) {
+      newArr = priceInfo.filter(ele => {
+        return ele.skuid == arrange[i].join(':')
+      });
+
+      if (newArr.length > 0) {
+        var skuid = newArr[0].skuid;
+        this.setData({
+          goodParameters: goodParameters,
+          salesnum: newArr[0].stock,
+          price: newArr[0].price,
+          imgurl: newArr[0].imgurl,
+          skuid: skuid
+        })
+      }
+    }
+
+  },
+  //排列组合
+  permute(temArr, testArr) {
+    let permuteArr = [];
+    let arr = testArr;
+    function innerPermute(temArr) {
+      for (let i = 0, len = arr.length; i < len; i++) {
+        if (temArr.length == len - 1) {
+          if (temArr.indexOf(arr[i]) < 0) {
+            permuteArr.push(temArr.concat(arr[i]));
+          }
+          continue;
+        }
+        if (temArr.indexOf(arr[i]) < 0) {
+          innerPermute(temArr.concat(arr[i]));
+        }
+      }
+    }
+    innerPermute(temArr);
+    return permuteArr;
   },
   /**
    * 减少数量
@@ -461,7 +500,7 @@ Page({
     }
     console.log('canshu', tempSkuid, this.data.anchorid)
     util.get('/api/Product/AddShoppingCart', {
-      skuid: tempSkuid,
+      skuid: this.data.skuid,
       anchorid: this.data.anchorid,
       num: this.data.goodCount,
       productid: this.data.goodDetailData.productid,
@@ -469,7 +508,9 @@ Page({
     }).then((res) => {
       if (res.data.code == 1000) {
         util.showToast({ 'title': '加入购物车成功' })
-      } else {
+      } else if (res.data.code == 7000){
+        util.showToast({ 'title': '库存不足' })
+      } else{
         util.showToast({ 'title': '加入购物车失败' })
         console.log(res)
       }
@@ -479,18 +520,10 @@ Page({
    * 立即购买
    */
   buyNow: function () {
-    let tempSkuid = "";
-    for (let i = 0; i < this.data.pI.attribute.length; i++) {
-      if (i != 0) {
-        tempSkuid += ":"
-      }
-      tempSkuid += this.data.pI.attribute[i].upperid
-    }
-    console.log(this.data);
 
     util.pageJump('orderConfirm', {
       productid: this.data.goodDetailData.productid,
-      skuid: tempSkuid,
+      skuid: this.data.skuid,
       producttype: 1,
       buynumber: this.data.goodCount,
       anchorid: this.data.anchorid,
@@ -548,6 +581,9 @@ Page({
   onUnload: function () {
 
   },
+  /**
+   * 关闭商品的详情展示
+   */
   closeDetailWindow() {
     var recommenList = []
     recommenList = this.data.recommenList

@@ -17,14 +17,22 @@ Page({
     isModule: "anchorMessage",
     animationData: {},
     isFollow: false,
-    isOperate: true,//头部消息
-    height: 0,
-    width:0,
+    height: 512,
     //主播商城
     goodArr: [],
     isSuper: false,
-    isScroll: true
+    isScroll: true,
+    opacity: 1,
+    isBox: {
+      imgHeight: 120,
+      nickLeft: 60,
+      nickTop: 168,
+      followTop: 148,
+      lineTop: 392,
+    }
   },
+
+
   /**********选择**********/
   isClick(e) {
     var id = e.currentTarget.dataset.id;
@@ -84,10 +92,10 @@ Page({
     })
 
   },
-  //获取窗口高度
-  getHeight() {
+  //获取窗口大小
+  getSize() {
     this.setData({
-      height: app.globalData.height
+      width: wx.getSystemInfoSync().windowWidth,
     })
   },
 
@@ -110,17 +118,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.getSystemInfo({
-      success:(res)=>{
-        this.setData({
-          width:res.windowWidth
-        })
-      },
-    })
-    this.getHeight();
-
+    this.getSize();
     this.setData({
-      anchorid: parseInt(options.anchorid)
+     anchorid: parseInt(options.anchorid)
+
     });
   },
   onShow: function () {
@@ -180,6 +181,7 @@ Page({
         this.data.imglist = res.data.data.imglist;
         let length = this.data.imglist.length;
 
+
         this.setData({
           anchorData: this.data.anchorData,
           operationArr: this.data.operationArr,
@@ -190,45 +192,61 @@ Page({
   },
   /********监听页面滚动***********/
   onPageScroll(e) {
-    console.log(this.data.height)
-    if (this.data.height == 644) {
-      this.scrollAnimation([e, 130])
-    } else {
-      this.scrollAnimation([e, 5])
+    if (e.scrollTop < 256) {
+      e.scrollTop = e.scrollTop < 0 ? 0 : e.scrollTop;
+      this.data.height = 512 - e.scrollTop / 256 * 256-31;
+      this.data.isBox.imgHeight = 120 - e.scrollTop / 256 * 60;
+      this.data.isBox.nickLeft = 60 + e.scrollTop / 256 * 80;
+      this.data.isBox.nickTop = 168 - e.scrollTop / 256 * 136;
+      this.data.isBox.followTop = 148 - e.scrollTop / 256 * 128;
+      this.data.isBox.lineTop = 392 - e.scrollTop / 256 * 292;
+      this.data.opacity = 1 - 1.5 * (e.scrollTop / 256 * 1)
+    } else if (e.scrollTop >= 256) {
+      this.data.height = 223;
+      this.data.isBox.imgHeight = 60;
+      this.data.isBox.nickLeft = 140;
+      this.data.isBox.nickTop = 32;
+      this.data.isBox.followTop = 20;
+      this.data.isBox.lineTop = 100;
+      this.data.opacity = 0
     }
-
+    this.setData({
+      height: this.data.height,
+      opacity: this.data.opacity,
+      isBox: this.data.isBox
+    })
   },
   /*****滚动动画****/
-  scrollAnimation(n) {
-    let animation = wx.createAnimation({
-      transformOrigin: "50% 50%",
-      duration: 2000,
-      timingFunction: "ease",
-      delay: 0
-    })
+  // scrollAnimation(n) {
+  //   let animation = wx.createAnimation({
+  //     transformOrigin: "50% 50%",
+  //     duration: 2000,
+  //     timingFunction: "ease",
+  //     delay: 0
+  //   })
 
-    if (n[0].scrollTop >= n[1]) {
-      animation.translateY(-100).opacity(0).step();
-      this.data.isSuper = true;
-      this.data.isScroll = false;
-      this.data.isOperate = false;
-      this.setData({
-        animationData: animation.export(),
-        isSuper: this.data.isSuper,
-        isScroll: this.data.isScroll,
-        isOperate: this.data.isOperate
-      })
-    } else {
-      animation.translateY(0).opacity(1).step();
-      this.data.isSuper = false;
-      this.data.isScroll = true;
-      this.data.isOperate = true;
-      this.setData({
-        animationData: animation.export(),
-        isSuper: this.data.isSuper,
-        isScroll: this.data.isScroll,
-        isOperate: this.data.isOperate
-      })
-    }
-  }
+  //   if (n[0].scrollTop >= n[1]) {
+  //     animation.translateY(-100).opacity(0).step();
+  //     this.data.isSuper = true;
+  //     this.data.isScroll = false;
+  //     this.data.isOperate = false;
+  //     this.setData({
+  //       animationData: animation.export(),
+  //       isSuper: this.data.isSuper,
+  //       isScroll: this.data.isScroll,
+  //       isOperate: this.data.isOperate
+  //     })
+  //   } else {
+  //     animation.translateY(0).opacity(1).step();
+  //     this.data.isSuper = false;
+  //     this.data.isScroll = true;
+  //     this.data.isOperate = true;
+  //     this.setData({
+  //       animationData: animation.export(),
+  //       isSuper: this.data.isSuper,
+  //       isScroll: this.data.isScroll,
+  //       isOperate: this.data.isOperate
+  //     })
+  //   }
+  // }
 })

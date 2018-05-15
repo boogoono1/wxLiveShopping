@@ -1,73 +1,22 @@
 /* pages/liveRoom/liveRoom.wxss */
 
-.fixed-box {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  background-color: #fff;
-}
-
-.header {
-  padding: 30rpx 60rpx 26rpx;
-  margin-top: 2rpx;
-  background-color: #fff;
-}
-
-.message-active {
-  padding: 20rpx 60rpx;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.message-active .anchor-name {
-  width: 400rpx;
-  display: flex;
-  align-items: center;
-}
-
-.message-active .anchor-name .img {
-  height: 60rpx;
-  width: 60rpx;
-  border-radius: 50%;
+.box {
+  width: 100%;
+  height: 512rpx;
+  z-index: 13;
   box-sizing: border-box;
-  border: 4rpx solid #fff;
-  box-shadow: 0 4px 8px 0 rgba(189, 189, 189, 0.50);
+  position: relative;
 }
-
-.message-active .anchor-name .nick {
-  margin-left: 20rpx;
-  width: 280rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 32rpx;
-  color: #333;
+.header{
+  width: 100%;
+  height: 512rpx;
+  background: #fff;  
+  position: fixed;
 }
-
-.message-active .button {
-  height: 60rpx;
-  width: 160rpx;
-  color: #fff;
-  font-size: 28rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 4rpx solid #e3656f;
-  border-radius: 72px;
-  background-color: #e3656f;
-}
-
-.line {
-  height: 20rpx;
-  width: 750rpx;
-  background-color: #f6f6f6;
-}
-
 .header .photo {
-  height: 120rpx;
-  width: 120rpx;
+  position: absolute;
+  top: 24rpx;
+  left: 60rpx;
 }
 
 .header .photo image {
@@ -87,8 +36,7 @@
 }
 
 .header .anchor .message {
-  display: flex;
-  flex-direction: column;
+  position: absolute;
 }
 
 .header .anchor .message .name {
@@ -99,7 +47,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 32rpx;
-  margin-bottom: 10rpx;
+  display: block;
 }
 
 .header .anchor .message .bg {
@@ -108,13 +56,14 @@
 }
 
 .header .anchor .button {
+  position: absolute;
+  right: 60rpx;
   height: 60rpx;
   width: 160rpx;
   color: #fff;
+  line-height: 60rpx;
+  text-align: center;
   font-size: 28rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border: 4rpx solid #e3656f;
   border-radius: 72px;
   background-color: #e3656f;
@@ -124,11 +73,12 @@
   color: #e3656f !important;
   background-color: #fff !important;
 }
-
 .header .operation {
-  margin-top: 40rpx;
+  position: absolute;
+  top: 286rpx;
+  width: 750rpx;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -149,17 +99,34 @@
   color: #999;
 }
 
+.module {
+  background-color: #fefefe;
+  z-index: 12;
+  position: relative;
+}
+
+.cover {
+  position: absolute;
+  top: 0;
+  z-index: 11;
+  height: 118rpx;
+  background: #fff;
+  border-bottom: 2rpx solid #f6f6f6;
+}
+
+.line {
+  height: 20rpx;
+  width: 750rpx;
+  background-color: #f6f6f6;
+}
+
 .message-title {
   height: 100rpx;
+  line-height: 100rpx;
   width: 750rpx;
-  margin-top: 20rpx;
-  background-color: #fff;
+  color: #333;
   display: flex;
-  justify-content: space-between;
-  padding: 0 132rpx;
-  align-items: center;
-  margin-bottom: 2rpx;
-  box-sizing: border-box;
+  justify-content: space-around;
 }
 
 .message-title view {
@@ -173,15 +140,8 @@
 
 .message-title .active {
   color: #e46571;
+  box-sizing: border-box;
   border-bottom: 2rpx solid #e46571;
-}
-
-.module {
-  background-color: #fefefe;
-}
-
-.super {
-  margin-top: 252rpx !important;
 }
 
 .anchor-message {
@@ -189,6 +149,7 @@
 }
 
 .show-photo {
+  width: 100%;
   height: 122rpx;
   box-shadow: border-box;
 }
@@ -294,16 +255,18 @@
 }
 
 .star-store .star-item {
-  height: 500rpx;
-  width: 50%;
+  width: 374rpx;
+  margin-top: 2rpx;
 }
 
 .star-store .star-item .show-photo {
   height: 340rpx;
+  width: 374rpx;
+  box-sizing: border-box;
+  background-color: #fafafa;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: 1rpx solid #ececec;
 }
 
 .star-store .star-item .show-photo image {
@@ -313,8 +276,7 @@
 
 .star-store .star-item .message {
   padding: 8rpx 20rpx 0;
-  background-color: #fff;
-  border-right: 1rpx solid #ececec;
+  background-color: #fafafa;
 }
 
 .star-store .star-item .message .title {

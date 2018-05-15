@@ -13,8 +13,8 @@ Page({
   //去直播大厅
   call(){
     if(this.data.num>0){
-       wx.switchTab({
-         url: '../index/index'
+       wx.reLaunch({
+         url: '../index/index',
        })
     }else{
       util.showModal({
@@ -39,9 +39,6 @@ Page({
     })
   },
   onShow: function () {
-    wx.setNavigationBarTitle({
-      title: '黄钻',
-    });
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
       backgroundColor: '#E3656F',

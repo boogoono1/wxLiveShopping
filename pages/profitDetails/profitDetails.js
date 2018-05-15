@@ -30,6 +30,7 @@ Page({
     otherparameters: [],//商品参数
     priceInfo: [],//价格相关信息
     attrInfo: [],//属性分类
+    isFill:false
   },
   //头部选择
   isClick(event) {
@@ -261,6 +262,7 @@ Page({
       })];
     }
     if (this.data.attrInfo.length == arr.length) {
+      console.log(this.data.goodsNum);
       if (this.data.goodsNum <= this.data.stock) {
         util.pageJump('orderConfirm', {
           productid: this.productid,
@@ -292,6 +294,12 @@ Page({
     this.anchorid = options.anchorid;
     this.skuid = options.skuid;
     this.goodsNum = options.goodsNum;
+    if (app.globalData.isIphoneX) {
+      this.setData({
+        isFill: true
+      })
+    } 
+
     wx.getSystemInfo({
       success: (res)=>{
         this.setData({
@@ -299,7 +307,6 @@ Page({
         })
       },
     })
-
   },
 
   onShow() {
@@ -326,12 +333,20 @@ Page({
       type: 1,
     }).then((res) => {
       if (res.data.code == '1000') {
+        console.log(res.data.data)
         //添加选择属性
         for (let i = 0; i < res.data.data.attrInfo.length; i++) {
           for (let j = 0; j < res.data.data.attrInfo[i].attrValueList.length; j++) {
-            res.data.data.attrInfo[i].attrValueList[j].isSelect = false;
+            if (res.data.data.attrInfo[i].attrValueList.length==1){
+              res.data.data.attrInfo[i].attrValueList[0].isSelect=true;
+              this.data.classify = res.data.data.attrInfo[i].attrValueList[0].attrname
+           }else{
+             res.data.data.attrInfo[i].attrValueList[j].isSelect = false;
+           }
           }
         }
+        
+      
         //stock,imgurl,price
         if (this.skuid) {
           let arr = res.data.data.priceInfo.filter((ele) => {
@@ -350,12 +365,13 @@ Page({
             }
           }
 
+
           this.setData({
             url: arr[0].imgurl,
             price: arr[0].price,
             stock: arr[0].stock,
             classify: this.intercept(arr[0].attrdesc),
-            goodsNum: this.goodsNum
+            goodsNum: this.goodsNum || 1
           })
         } else if (this.attrdesc) {
           let arr = res.data.data.priceInfo.filter((ele) => {
@@ -379,16 +395,14 @@ Page({
             price: arr[0].price,
             stock: arr[0].stock,
             classify: this.intercept(arr[0].attrdesc),
-            goodsNum: this.goodsNum
+            goodsNum: this.goodsNum || 1
           })
-
-
-
         } else {
           this.setData({
             url: res.data.data.priceInfo[0].imgurl,
             price: res.data.data.priceInfo[0].price,
-            stock: res.data.data.priceInfo[0].stock
+            stock: res.data.data.priceInfo[0].stock,
+            classify: this.data.classify || '分类'
           })
         }
         this.setData({

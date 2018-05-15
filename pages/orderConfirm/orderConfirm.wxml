@@ -1,22 +1,21 @@
 <view class="container">
-  <scroll-view class="pinkView" scroll-y="{{true}}">
+  <scroll-view class="pinkView" style="bottom:{{isFill?'152':'84'}}rpx" scroll-y="{{true}}">
     <!-- 收货地址 -->
     <view class="userInfo" bindtap="changeUserInfo">
       <view class="userView">
-        <icon class='iconfont icon-iconfontjiahao' hidden='{{isHidden}}'></icon>
+        <icon class="iconfont icon-iconfontjiahao jia" hidden="{{isHidden}}"></icon>
         <view class="infoView">
           <p class="userName">
             {{receivingAddressData.name}}
-
             <span class="PhoneNum">{{receivingAddressData.phone}}</span>
             <span class="default" wx:if="{{receivingAddressData.state == 1}}">[默认地址]</span>
           </p>
           <view class="addressText">
             {{receivingAddressData.areaname}}{{receivingAddressData.detailaddress}}
-            <image class="addressImg"  src="{{ImageData.addressImg}}" hidden='{{!isHidden}}'></image>
+            <image class="addressImg" src="{{ImageData.addressImg}}" hidden="{{!isHidden}}"></image>
           </view>
         </view>
-        <view class="right-box" hidden='{{!isHidden}}'></view>
+        <view class="right-box" hidden="{{!isHidden}}"></view>
       </view>
       <image class="bottomImage" src="{{ImageData.bottomImage}}"  mode="aspectFit"></image>
     </view>
@@ -36,9 +35,9 @@
           <p class="goodPrice">¥{{product.price}}</p>
         </view>
         <view class="threeView">
-          <image class="decrease" src="{{ImageData.decrease}}" data-anchorindex="{{index}}" data-goodindex="{{key}}" bindtap="decreaseCount" mode="aspectFit"></image>
-          <label class="countNum">{{product.num}}</label>
-          <image class="add" src="{{ImageData.add}}" data-anchorindex="{{index}}" data-goodindex="{{key}}" bindtap="addCount" mode="aspectFit"></image>
+          <!-- <image class="decrease" src="{{ImageData.decrease}}" data-anchorindex="{{index}}" data-goodindex="{{key}}" bindtap="decreaseCount" mode="aspectFit"></image> -->
+          <label class="countNum">x {{product.num}}</label>
+          <!-- <image class="add" src="{{ImageData.add}}" data-anchorindex="{{index}}" data-goodindex="{{key}}" bindtap="addCount" mode="aspectFit"></image> -->
         </view>
       </view>
       <!-- 订单小计 -->
@@ -65,7 +64,9 @@
         <image class="titleImg" src="{{ImageData.titleImg5}}" mode="aspectFit"></image>
         <p class="titleIntro">
           优惠券
-          <span class="payWay" wx:if="{{item.hasCoupon}}">{{item.select == -1 ? '请选择优惠券':'已选择优惠券'}}</span>
+          <span class="payWay" wx:if="{{item.hasCoupon}}">
+            {{item.select == -1 ? '请选择优惠券':'已选择优惠券'}}
+          </span>
           <span class="payWay" wx:if="{{!item.hasCoupon}}">暂无可用优惠券</span>
         </p>
         <label class="decreasePrice" wx:if="{{item.couponInfo.type == 2}}">
@@ -84,9 +85,11 @@
       </view>
     </view>
   </scroll-view>
-  <view class="submitOrder">
+  <view class="submitOrder" style="height:{{isFill?'152':'84'}}rpx">
     <view class="actMoney">实付金额：¥{{total}}</view>
     <view class="submit" bindtap="submitOrder">提交订单</view>
+    <view class='fill' wx:if="{{isFill}}"></view>
+
   </view>
 </view>
 <!-- 选择优惠券的底部弹窗 -->
@@ -97,87 +100,81 @@
     <span class="advice">优惠券不得叠加使用</span>
   </p>
   <scroll-view class="couponScrolView" scroll-y="true">
-    <view class="couponitem" wx:for="{{couponInfoList}}" wx:key="key" data-couponIndex="{{index}}" bindtap="selectSingleCoupon">
+    <view class="couponitem {{item.state ? '': 'no-use'}}" wx:for="{{couponInfoList}}" wx:key="key" data-couponIndex="{{index}}" data-state="{{item.state}}" bindtap="selectSingleCoupon">
       <view class="couponDescription">
         <p class="couponCount">
-          {{item.decrease}}
-          <span class="unit">{{item.type == 2?'折':'元'}}</span>
+          {{item.price}}
+          <span class="unit">{{item.coupontype == 1 ? '折':'元'}}</span>
         </p>
-        <p class="tipWord2">(仅限数码产品)</p>
+        <p class="tipWord2">({{item.categoryname}})</p>
       </view>
       <view class="couponCondiction">
-        <p class="couponCount1" wx:if="{{item.type == 1}}">满{{item.reach}}抵{{item.decrease}}</p>
-        <p class="couponCount1" wx:if="{{item.type == 2}}">满{{item.reach}}可用</p>
+        <p class="couponCount1">{{item.mode1}}</p>
         <p class="tipWord1">有效期{{item.start}}-{{item.end}}</p>
       </view>
-      <image class="selectedImg" src="{{ImageData.selected}}" mode="aspectFit"></image>
+      <image class="selectedImg" src="{{ImageData.selected}}" mode="aspectFit" wx:if="{{item.select}}"></image>
     </view>
   </scroll-view>
 </view>
 <!-- 修改收货地址 -->
-<view class='editAddressView' hidden='{{isEdit}}'>
-  <view wx:if='{{showSelectAdd}}'>
-    <view class='addselectView'>
-      <div class='selectTitle'>
+<view class="editAddressView" hidden="{{isEdit}}">
+  <view wx:if="{{showSelectAdd}}">
+    <view class="addselectView">
+      <div class="selectTitle">
         <label>更改收货地址</label>
-        <image src='{{closeurl}}' bindtap='isClose' class='close' mode='aspectFit' style='position:absolute;right:40rpx'></image>
+        <image src="{{closeurl}}" bindtap="isClose" class="close" mode="aspectFit" style="position:absolute;right:40rpx"></image>
       </div>
-      <scroll-view class='select-scroll' scroll-y>
-        <view class="userView" wx:for='{{receivingAddressDataList}}' data-item='{{item}}' bindtap='gotoEdite' wx:for-item='item' wx:key='{{index}}'>
-          <view class="infoView" style='width:90%'>
+      <scroll-view class="select-scroll" scroll-y>
+        <view class="userView" wx:for="{{receivingAddressDataList}}" data-item="{{item}}" bindtap="gotoEdite" wx:for-item="item" wx:key="{{index}}">
+          <view class="infoView" style="width:90%">
             <p class="userName">
               {{item.name}}
               <span class="PhoneNum">{{item.phone}}</span>
               <span class="default" wx:if="{{item.state == 1}}">[默认地址]</span>
             </p>
-            <view class="addressText">
-              {{item.areaname}}{{item.detailaddress}}
-            </view>
+            <view class="addressText">{{item.areaname}}{{item.detailaddress}}</view>
           </view>
           <view class="right-box"></view>
         </view>
       </scroll-view>
-      <view class='editNewAdd' bindtap='newAddress'>
+      <view class="editNewAdd" bindtap="newAddress">
         <i class="iconfont icon-iconfontjiahao"></i>
         <label>新建地址</label>
       </view>
     </view>
   </view>
-
-  <view wx:if='{{!showSelectAdd}}'>
-    <view class='addselectView'>
-      <view class='selectTitle'>
-        <i class='iconfont icon-fanhui back' bindtap="isBack"></i>
-        <label hidden='{{idAdd==1?false:true}}'>编辑收货地址</label>
-        <label hidden='{{idAdd==0?false:true}}'>新建收货地址</label>
-        <image src='{{closeurl}}' class='close' mode='aspectFit' bindtap='isClose' style='position:absolute;right:40rpx'></image>
+  <view wx:if="{{!showSelectAdd}}">
+    <view class="addselectView">
+      <view class="selectTitle">
+        <i class="iconfont icon-fanhui back" bindtap="isBack"></i>
+        <label hidden="{{idAdd==1?false:true}}">编辑收货地址</label>
+        <label hidden="{{idAdd==0?false:true}}">新建收货地址</label>
+        <image src="{{closeurl}}" class="close" mode="aspectFit" bindtap="isClose" style="position:absolute;right:40rpx"></image>
       </view>
-      <view class='select-scroll' scroll-y>
+      <view class="select-scroll" scroll-y>
         <view class="line line-f">
           <label>收件人：</label>
-          <input type="text" bindinput='recipients' value='{{alterAddressData.name}}'></input>
+          <input type="text" bindinput="recipients" value="{{alterAddressData.name}}"></input>
         </view>
         <view class="line line-f">
           <label>手 机：</label>
-          <input type="number" bindinput="bindKeyInput" maxlength="11" placeholder='请输入你的手机号' value='{{alterAddressData.phone}}'></input>
+          <input type="number" bindinput="bindKeyInput" maxlength="11" placeholder="请输入你的手机号" value="{{alterAddressData.phone}}"></input>
         </view>
-        <view class="section" style='font-size:28rpx;color:#333'>
+        <view class="section" style="font-size:28rpx;color:#333">
           <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-            <view class="picker line line-f">
-              所在地区：{{region[0]}}{{region[1]}}{{region[2]}}
-            </view>
+            <view class="picker line line-f">所在地区：{{region[0]}}{{region[1]}}{{region[2]}}</view>
           </picker>
         </view>
         <view class="line line-f">
           <label>详细地址：</label>
-          <input type="text" placeholder="请输入详细地址" bindinput="DetailedSite" value='{{alterAddressData.detailaddress}}'></input>
+          <input type="text" placeholder="请输入详细地址" bindinput="DetailedSite" value="{{alterAddressData.detailaddress}}"></input>
         </view>
-        <view class='switch'>
-          <text class='isDefault'>是否设为默认地址</text>
-          <switch checked bindchange="switchChange" />
+        <view class="switch">
+          <text class="isDefault">是否设为默认地址</text>
+          <switch checked="{{isSwitch}}" bindchange="switchChange" />
         </view>
       </view>
-      <view class='editNewAdd' bindtap='save'>
+      <view class="editNewAdd" bindtap="save">
         <label>保存并使用</label>
       </view>
     </view>

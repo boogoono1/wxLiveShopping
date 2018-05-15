@@ -12,16 +12,13 @@ Page({
     noMoneyOffArr: [],//未使用满减劵
     noDiscountArr: [],//未使用折扣劵
     noGeneralArr: [],//未使用通用劵
-    moneyOffArr: [],
-    discountArr: [],
-    generalArr: [],
+    allArr:[],//全部
     height: 0,
     windowHeight:0,
     contentHeight:0,
     usedImgUrl: util.image('coupon_bg_already_used.png'),
     failedImgUrl: util.image('coupon_bg_failed.png'),
     imgUrl: util.image('coupon_bg_already_received.png'),
-    duration: 500,
     isHidden:false
   },
 
@@ -51,6 +48,8 @@ Page({
     }).then((res) => {
       if (res.data.code == "1000") {
         /****************全部***************************/
+        console.log(res.data.data)
+        this.toTime(res.data.data)
         let allArr = res.data.data;
         let discountArr = allArr.filter((ele) => {
           return ele.coupontype == 1;
@@ -65,15 +64,19 @@ Page({
           moneyOffArr[i].satisfy = moneyOffArr[i].couponcontent.split('|')[0];
           moneyOffArr[i].replace = moneyOffArr[i].couponcontent.split('|')[1];
         }
-        this.toTime(moneyOffArr)
-        this.toTime(discountArr)
-        this.toTime(generalArr)
-        this.setData({
-          moneyOffArr: moneyOffArr,
-          discountArr: discountArr,
-          generalArr: generalArr
+        allArr = [...discountArr, ...generalArr, ...moneyOffArr];
+        let newALL=allArr.filter(ele=>{
+          return ele.state==1
         })
-
+        let newALL2 = allArr.filter(ele => {
+          return ele.state == 0
+        })
+        let newALL3 = allArr.filter(ele => {
+          return ele.state == -1
+        })
+        this.setData({
+          allArr: [...newALL2, ...newALL, ...newALL3]
+        })
         /**************未使用***************/
         let noUseArr = res.data.data.filter((ele) => {
           return ele.state == 0;

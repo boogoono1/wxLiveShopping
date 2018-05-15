@@ -138,3 +138,36 @@ image {
   color: #333;
   font-size: 24rpx;
 }
+.footer {
+  position: fixed;
+  bottom: 0rpx;
+  display: inline-flex;
+  height: 100rpx;
+  width: 750rpx;
+  color: #333;
+  background-color: #fff;
+}
+.footer .fill{
+  height:68rpx;
+}
+.footer .tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100rpx;
+}
+
+.footer .tab .img {
+  height: 60rpx;
+  width: 60rpx;
+}
+
+.footer .tab .tab-name {
+  font-size: 28rpx;
+  color: #c0c0c9;
+}
+.footer .tab .active{
+  color: #E46569;
+}

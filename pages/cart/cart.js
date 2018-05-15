@@ -1,5 +1,6 @@
 // pages/cart/cart.js
 import util from '../../utils/util.js';
+let app=getApp();
 Page({
 
   /**
@@ -28,7 +29,8 @@ Page({
     productid: null,//商品id
     skuid: null,//属性id
     onCart: false,
-    cartLoading: false
+    cartLoading: false,
+    isFill:false
   },
 
   /******跳转到商品详情********/
@@ -63,10 +65,10 @@ Page({
     let ind = e.currentTarget.dataset.id[1];
     this.data.cartArr[index].prolist[ind].isSelect = !this.data.cartArr[index].prolist[ind].isSelect;
     if (this.data.cartArr[index].prolist[ind].isSelect) {
-      this.data.allPrice = this.strip(this.data.allPrice) + this.strip(this.data.cartArr[index].prolist[ind].allPrice);
+      this.data.allPrice = this.strip(parseFloat(this.data.allPrice)) + this.strip(parseFloat(this.data.cartArr[index].prolist[ind].allPrice));
       this.data.allNum += parseInt(this.data.cartArr[index].prolist[ind].num);
     } else {
-      this.data.allPrice = this.strip(this.data.allPrice) - this.strip(this.data.cartArr[index].prolist[ind].allPrice);
+      this.data.allPrice = this.strip(parseFloat(this.data.allPrice)) - this.strip(parseFloat(this.data.cartArr[index].prolist[ind].allPrice));
       this.data.allNum -= parseInt(this.data.cartArr[index].prolist[ind].num);
     };
 
@@ -100,7 +102,7 @@ Page({
       cartArr: this.data.cartArr,
       allSelect: this.data.allSelect,
       allNum: this.data.allNum,
-      allPrice: this.strip(this.data.allPrice),
+      allPrice: this.strip(this.data.allPrice).toFixed(2),
       start: this.data.start
     });
   },
@@ -118,7 +120,7 @@ Page({
       for (let j = 0; j < this.data.cartArr[i].prolist.length; j++) {
         if (this.data.cartArr[i].prolist[j].isSelect) {
           this.data.allNum += parseInt(this.data.cartArr[i].prolist[j].num);
-          this.data.allPrice = this.strip(this.data.allPrice) + this.strip(this.data.cartArr[i].prolist[j].allPrice);
+          this.data.allPrice = this.strip(parseFloat(this.data.allPrice)) + this.strip(parseFloat(this.data.cartArr[i].prolist[j].allPrice));
         }
       }
     }
@@ -133,7 +135,7 @@ Page({
     this.setData({
       allSelect: this.data.allSelect,
       allNum: this.data.allNum,
-      allPrice: this.strip(this.data.allPrice),
+      allPrice: this.strip(this.data.allPrice).toFixed(2),
       cartArr: this.data.cartArr,
       start: this.data.start
     })
@@ -155,32 +157,33 @@ Page({
     if (this.data.allSelect) {
       this.data.allNum = 0;
       this.data.allPrice = 0;
+      console.log(this.data.cartArr)
       for (let i = 0; i < this.data.cartArr.length; i++) {
         for (let j = 0; j < this.data.cartArr[i].prolist.length; j++) {
           this.data.allNum += parseInt(this.data.cartArr[i].prolist[j].num);
-          this.data.allPrice = this.strip(this.data.allPrice) + this.strip(this.data.cartArr[i].prolist[j].allPrice);
+          this.data.allPrice = this.strip(parseFloat(this.data.allPrice)) + this.strip(parseFloat(this.data.cartArr[i].prolist[j].allPrice));
         }
+
       }
     } else {
       for (let i = 0; i < this.data.cartArr.length; i++) {
         for (let j = 0; j < this.data.cartArr[i].prolist.length; j++) {
           this.data.allNum -= parseInt(this.data.cartArr[i].prolist[j].num);
-          this.data.allPrice = this.strip(this.data.allPrice) - this.strip(this.data.cartArr[i].prolist[j].allPrice)
+          this.data.allPrice = this.strip(parseFloat(this.data.allPrice)) - this.strip(parseFloat(this.data.cartArr[i].prolist[j].allPrice))
         }
       }
     }
-
     this.setData({
       cartArr: this.data.cartArr,
       allNum: this.data.allNum,
-      allPrice: this.strip(this.data.allPrice),
+      allPrice:this.strip(this.data.allPrice).toFixed(2),
       start: this.data.allSelect
     })
 
   },
   /***************浮点数解决方案***************/
   strip(num, precision = 3) {
-    return +parseFloat(num.toPrecision(precision));
+    return + parseFloat(num.toPrecision(precision));
   },
   /*******************通用选择属性****************/
   isSelected(e) {
@@ -253,22 +256,54 @@ Page({
     let ind = e.currentTarget.dataset.id[1];
     let anchorid = parseInt(this.data.cartArr[index].anchorid);
     let productid = parseInt(this.data.cartArr[index].prolist[ind].productid);
-    this.data.cartArr[index].prolist[ind].num++;
-    this.data.cartArr[index].prolist[ind].allPrice = parseInt(this.data.cartArr[index].prolist[ind].num) * parseFloat(this.data.cartArr[index].prolist[ind].price)
-    this.setData({
-      cartArr: this.data.cartArr
+
+    util.get('/api/Product/ProductPrice', {
+      productid: parseInt(productid),
+      type: 1
+    }).then(res => {
+      let skuidArr = res.data.data.priceInfo.filter(ele => {
+        return ele.skuid = this.data.cartArr[index].prolist[ind].skuid
+      })
+      if (parseInt(skuidArr[0].stock) <= this.data.cartArr[index].prolist[ind].num) {
+        util.showToast({
+          title: '库存不足'
+        })
+      } else {
+        this.data.cartArr[index].prolist[ind].num++;
+        this.data.cartArr[index].prolist[ind].allPrice = this.strip(parseInt(this.data.cartArr[index].prolist[ind].num) * parseFloat(this.data.cartArr[index].prolist[ind].price))
+      }
+      util.get('/api/Product/UpdateShoppingCart', {
+        type: 0,
+        productid: parseInt(productid),
+        cartid: parseInt(this.data.cartArr[index].prolist[ind].cartid),
+        num: this.data.cartArr[index].prolist[ind].num,
+        skuid: this.data.cartArr[index].prolist[ind].skuid
+      })
+      this.setData({
+        cartArr: this.data.cartArr
+      })
     })
   },
   //减少
   minus(e) {
     let index = e.currentTarget.dataset.id[0];
     let ind = e.currentTarget.dataset.id[1];
+    let productid = parseInt(this.data.cartArr[index].prolist[ind].productid);
     if (this.data.cartArr[index].prolist[ind].num == 1) {
       return;
     } else {
       this.data.cartArr[index].prolist[ind].num--;
-      this.data.cartArr[index].prolist[ind].allPrice = parseInt(this.data.cartArr[index].prolist[ind].num) * parseFloat(this.data.cartArr[index].prolist[ind].price)
+      this.data.cartArr[index].prolist[ind].allPrice = this.strip(parseInt(this.data.cartArr[index].prolist[ind].num) * parseFloat(this.data.cartArr[index].prolist[ind].price))
     }
+    util.get('/api/Product/UpdateShoppingCart', {
+      type: 0,
+      productid: parseInt(productid),
+      cartid: parseInt(this.data.cartArr[index].prolist[ind].cartid),
+      num: this.data.cartArr[index].prolist[ind].num,
+      skuid: this.data.cartArr[index].prolist[ind].skuid
+    }).then(res => {
+      console.log(res)
+    })
     this.setData({
       goodsNum: this.data.cartArr[index].prolist[ind].num,
       cartArr: this.data.cartArr
@@ -292,17 +327,13 @@ Page({
             num: parseInt(obj.num)
           }).then((res) => {
             if (res.data.code == '1000') {
-              util.get('/api/Product/ShoppingCartList', {
-                userid: util.getUserid(),
-                token: util.getToken()
-              }).then((res) => {
-
-                this.setData({
-                  cartArr: res.data.data
-                })
+              this.getData();
+              this.setData({
+                allNum: 0,
+                allPrice: 0,
+                allSelect: false,
+                start: false
               })
-            } else {
-              console.log('更新购物车失败')
             }
           })
         }
@@ -322,14 +353,14 @@ Page({
         for (let j = 0; j < this.data.cartArr[i].prolist.length; j++) {
           if (this.data.cartArr[i].prolist[j].isSelect) {
             this.data.allNum += parseInt(this.data.cartArr[i].prolist[j].num);
-            this.data.allPrice = this.strip(this.data.allPrice) + this.strip(this.data.cartArr[i].prolist[j].allPrice);
+            this.data.allPrice = this.strip(parseFloat(this.data.allPrice)) + this.strip(parseFloat(this.data.cartArr[i].prolist[j].allPrice));
           }
         }
       }
 
       this.setData({
         allNum: this.data.allNum,
-        allPrice: this.data.allPrice,
+        allPrice:this.strip(this.data.allPrice).toFixed(2),
         cartArr: this.data.cartArr
       })
     } else {
@@ -525,12 +556,18 @@ Page({
       cartList: JSON.stringify(cartList)
     })
   },
-  onLoad:function(){
+  onLoad: function () {
     wx.setNavigationBarTitle({
       title: '购物车',
     });
+    if (app.globalData.isIphoneX){
+      this.setData({
+        isFill:true
+      })
+    }
     this.setData({
-      in: this.data.cartArr.length - 1
+      in: this.data.cartArr.length - 1,
+      height: wx.getSystemInfoSync().windowHeight - 50
     });
     this.getData();
   },
@@ -544,7 +581,7 @@ Page({
           res.data.data[i].isAllSelect = false;//全选
           for (let j = 0; j < res.data.data[i].prolist.length; j++) {
             res.data.data[i].prolist[j].isSelect = false;//商品选择
-            res.data.data[i].prolist[j].allPrice = parseInt(res.data.data[i].prolist[j].num) * parseFloat(res.data.data[i].prolist[j].price);//总价
+            res.data.data[i].prolist[j].allPrice = this.strip(parseInt(res.data.data[i].prolist[j].num) * parseFloat(res.data.data[i].prolist[j].price));//总价
           }
         }
         if (res.data.data.length == 0) {

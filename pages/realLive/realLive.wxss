@@ -2,7 +2,9 @@
 .container{
      background: #5C5F71;
 }
-
+input{
+    padding:0;
+}
 .content{
   height: 100%;
   width: 100%;
@@ -39,7 +41,6 @@
   background: #E3656F;
   height: 60rpx;
   width: 120rpx;
-
   border-radius: 30rpx;
   color: #fff;
   font-size: 28rpx;
@@ -54,7 +55,6 @@
   height:60rpx;
   width:120rpx;
   color: #f6f6f6;
-
   border-radius:30rpx;
   background-color: rgba(256, 256, 256, .1);
   font-size:28rpx;
@@ -73,10 +73,10 @@
   background: #333333;
 }
 .oprateView{
-  position: fixed;
-  bottom: 0;
+  position: absolute;
   width: 100%;
-  height:380rpx;
+  top: 830rpx;
+  bottom:0rpx;
   background: #5C5F71;
   display: flex;
   flex-direction: row;
@@ -87,7 +87,7 @@
   flex-direction: column;
   padding: 10rpx 10rpx 0 30rpx;
   width: 550rpx;
-  height: 370rpx;
+  height: 100%;
   font-size:28rpx;
 }
 .tipView{
@@ -98,13 +98,14 @@
   color: #FF4D5B;
   margin-bottom: 10rpx;
   line-height:35rpx;
+  white-space: nowrap;
 }
 .bulletContent{
   color: #fff;
   margin-left: 20rpx;
   word-wrap:break-word;
   line-height: 30rpx;
-
+  white-space: pre-wrap;
 }
 .buyInfo{
   padding-left: 20rpx;
@@ -122,10 +123,6 @@
   margin-left: 20rpx;
   word-wrap:break-word;
 }
-
-
-
-
 .absoluteView{
   height: 100%;
   width: 110rpx;
@@ -192,7 +189,7 @@
 .bulletInput{
   height: 40rpx;
   width: 350rpx;
-  margin-top: 15rpx;
+  margin-top:20rpx;
   margin-left: 20rpx;
   font-size: 28rpx;
   color: #666;
@@ -223,6 +220,9 @@
   display: flex;
   flex-direction: row;
   box-shadow:0 0 6rpx 6rpx gray;
+}
+.goodListView view{
+  height: 250rpx;
 }
 .goodListScroll{
   width: 670rpx;
@@ -311,35 +311,45 @@ margin-top:30rpx;
   width: 100%;
   font-size: 28rpx;
   color: #999;  
+  margin-top: 30rpx;
 }
 .size-tip{
   margin: 0rpx auto 20rpx 30rpx;
 }
+.attrView{
+  width: 90%;
+  padding-left: 30rpx;
+}
 .selectButView{
   width: 100%;
   font-size: 28rpx;
-  
-
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; 
+  margin-bottom:10rpx;
 }
 .butSelected{
   height: 60rpx;
   color: #E3656F;
-  margin-left: 30rpx;
+  margin-right: 20rpx;
   line-height: 58rpx;
   border-radius: 10rpx;
   text-align: center;
   margin-bottom:10rpx;
   white-space: nowrap;
   overflow: hidden;
+  font-size: 24rpx;
   padding:0 8rpx;
   border: 1px solid #E3656F;
   box-sizing:border-box; 
+  float: left;
 }
 .butNotSelected{
+   font-size: 24rpx;
   height: 60rpx;
   border: 1px solid #999; 
   color: #666;
-  margin-left: 30rpx;
+  margin-right: 20rpx;
   line-height: 58rpx;
   border-radius: 10rpx;
   text-align: center;
@@ -347,6 +357,9 @@ margin-top:30rpx;
   white-space: nowrap;
   padding:0 8rpx;
   box-sizing:border-box;
+  flex: 1;
+  flex-shrink: 1;
+  float: left;
 }
 .cannotSelected{
   background: #D8D8D8;
@@ -389,6 +402,9 @@ margin-top:30rpx;
   display: flex;
   flex-direction: row;
   font-size: 28rpx;
+  bottom:20rpx;
+  position:absolute;
+
 }
 .addToCaft{
   margin-left:20rpx;
@@ -428,13 +444,14 @@ margin-top:30rpx;
   white-space: nowrap;
 }
 .aon{
-position: absolute;
-white-space:nowrap;/* 防止向下换行*/
+  position: absolute;
+  white-space:nowrap;
+  color: #E3656F;
 }
-@keyframes first{
+ @keyframes first{
   from{left: 100%; }
-  to{left: -100%;}
-}
+  to{left: 40%;}
+} 
 /*swtich样式-start*/
 /*swtich整体大小*/
 .wx-switch-input{
@@ -487,7 +504,7 @@ white-space:nowrap;/* 防止向下换行*/
   top: 0;
 }
 .goodListView image:nth-child(1){
-  margin:20rpx 28rpx 0 28rpx;
+  margin:30rpx 28rpx 0 28rpx;
   width:220rpx;
   height:220rpx;
 }
@@ -498,18 +515,18 @@ white-space:nowrap;/* 防止向下换行*/
   float:right;
   position:absolute;
   right:29rpx;
-  margin-top:20rpx;
+  margin-top:30rpx;
 }
 .anchorNameAndImg{
   position: absolute;
   display: flex;
   flex-direction: row;
   top: 20rpx;
-  left:290rpx;
+  left:30rpx;
   height: 60rpx;
   border-radius: 30rpx;
   background-color: rgba(120, 120, 120, 0.65); 
-  padding-right: 20rpx;
+  padding-right: 30rpx;
 }
 .anchorNameAndImgimage{
   height: 60rpx;
@@ -521,6 +538,7 @@ white-space:nowrap;/* 防止向下换行*/
   height: 60rpx;
   line-height: 60rpx;
   padding-left: 10rpx;
+  padding-right: 5rpx;
   color: #f6f6f6;
   font-size: 24rpx;
 }
@@ -532,24 +550,69 @@ white-space:nowrap;/* 防止向下换行*/
   overflow-x:hidden !important;
   overflow-y:hidden !important;
   box-shadow:0 0 6rpx 6rpx gray;
-
+  z-index: 2 !important;
+}
+cover-view.anchorNameAndImg{
+  position: absolute;
+  z-index: 999!important;
 }
 .realplayer{
   height: 100%;
   width: 100%;
-  background: #f00;
-  overflow-x:hidden !important;
-  overflow-y:hidden !important;
-  line-height: 100%;
+  background: #E3656F;
   position: absolute;
   top:0;
   left:0;
   right:0;
 }
+.tapmeToLink{
+  width:474rpx;
+  height:824rpx;
+  position:absolute;
+  right:0;top:0;
+  color:#f6f6f6;
+  /* background: #E3656F; */
+  background-color: rgba(48, 48, 48, .8);
+  font-size: 28rpx;
+  line-height: 824rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.play{
+  width: 120rpx;
+  height: 120rpx;
+  align-items: center;
+  vertical-align: middle;
+  margin: 320rpx auto 0 auto;
+}
+.tipToLink{
+  text-align: center;
+  margin-top: 20rpx;
+}
+
 .rowViewCell{
   display: flex;
-  width: 500rpx;
-  border: 1rpx solid red;
+  width: 100%;
+  height: 90rpx;
+  flex-direction: row;
   flex-wrap: wrap;
    word-break:break-all;
+}
+.loadingImg{
+  color: #f6f6f6;
+  font-size: 28rpx;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 824rpx;
+}
+.bulletWebView{
+  background-color: rgba(0, 0, 0, .1);
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300rpx;
+  height: 600rpx;
 }

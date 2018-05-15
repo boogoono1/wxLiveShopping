@@ -1,74 +1,35 @@
 <!--pages/realVideo/realVideo.wxml-->
 <view class='content'>
- <scroll-view scroll-y class='goodListView'>
+  <scroll-view scroll-y class='goodListView' style='{{}}'>
     <view wx:for="{{recommenList}}" wx:key='{{index}}' data-index='{{index}}' data-productid='{{item.productid}}' bindtap='openGoodDetail'>
-      <image src='{{item.coverurl}}'  mode='scaleToFill' ></image>
+      <image src='{{item.coverurl}}' mode='scaleToFill'></image>
       <image src='{{imageData.goodSelected}}' mode='scaleToFill' wx:if='{{item.selected == 1}}'></image>
     </view>
   </scroll-view>
   <view class='liveplayer'>
-     <video src="{{videoUrl}}" class='realplayer' danmu-list="{{bulletDataArray}}" enable-danmu danmu-btn controls ></video>   
+    <video src="{{videoUrl}}" class='realplayer' danmu-list="{{bulletDataArray}}"></video>
   </view>
   <!-- 主播名和头像 -->
-   <cover-view class='anchorNameAndImg'>
+  <cover-view class='anchorNameAndImg'>
     <cover-image src='{{anchorImg}}' class='anchorNameAndImgimage'></cover-image>
     <cover-view class='anchorNameAndImgname'>{{anchorName}}</cover-view>
   </cover-view>
   <cover-view class="{{isfriend == 0?'attention':'attentioned'}}" hidden="{{anchorid == userid}}" bindtap='attentionAnchor'>{{isfriend==0?'关注':'已关注'}}</cover-view>
-    <cover-view class='goodDetail' hidden='{{goodDetailHidden}}'>
-    <cover-view class='goodView'>
-      <cover-image class='goodImg' src='{{imgurl}}' mode='aspectFit'></cover-image>
-      <cover-view class='introView'>
-        <cover-view class='goodDetailText'>{{goodDetailData.name}}</cover-view>
-        <cover-view class='price'>¥{{price}}</cover-view>
-      </cover-view>
-      <cover-image class='closeDetailWindow' src='{{imageData.closeWindow}}' mode='aspectFit' bindtap='closeDetailWindow'></cover-image>
-    </cover-view>
-    <cover-view class='size'>
-      <cover-view class='size-tip'>规格</cover-view>
-      <cover-view class='selectButView'>
-         <block wx:for='{{goodParameters}}' wx:for-item='paramitem' wx:key='{{index}}'>
-          <cover-view wx:for='{{paramitem.attrValueList}}'  wx:key='{{index}}'> 
-            <cover-view  class="{{item.selected==1?'butSelected':'butNotSelected'}}" data-selectindex='{{index}}' data-upperid='{{item.attrupperid}}' bindtap='selectOrcancle'>{{item.attrname}}</cover-view>
-          </cover-view> 
-        </block> 
-      </cover-view>
-    </cover-view>
-    <cover-view class='size'>
-      <cover-view class='size-tip'>数量</cover-view>
-      <cover-view class='CountView'>
-       <cover-image class='decrease' src='{{imageData.decrease}}' bindtap='decreaseCount'></cover-image>
-       <cover-view class='CountView-Count'>{{goodCount}}</cover-view>
-       <cover-image class='decrease' src='{{imageData.add}}' bindtap='addCount'></cover-image>
-       <cover-image class='caftImg' src='{{imageData.shoppingCart}}' bindtap='gotoCarft'></cover-image>
-      </cover-view>
-    </cover-view>
-    <cover-view class='buyView'>
-      <cover-view class='addToCaft' bindtap='addCart'>加入购物车</cover-view>
-      <cover-view class='buyNow' bindtap='buyNow'>立即购买</cover-view>
-      <!-- <cover-view class='carftNum'>123</cover-view> -->
-    </cover-view>
-  </cover-view>
-
-
-  <!-- <view class='tipView' >欢迎来到播购，广告，不文明内容将被封号哈！(网警24小时巡查)</view> -->
-  <view class='oprateView' style="{{model=='iPhone X'?'height:686rpx':''}}">
+  <view class='oprateView'>
     <!-- 固定在右下角的两个空间 -->
     <scroll-view class='bulletView' style="{{inputBulletHidden?'':'height:330rpx'}}" scroll-y='true' scroll-top="{{scrollTop}}">
-      <view class='tipView' >欢迎来到播购，广告，不文明内容将被封号哈！(网警24小时巡查)</view>
-      <view  wx:for='{{bulletDataRecod}}' wx:for-item='bulletData' wx:key='{{index}}' style='line-height:42rpx;width:500rpx;'>
-        <view class='buyInfo' wx:if="{{bulletData.status == '0'}}" anmation='{{bulletAnimation}}'>{{bulletData.name}}<text class='bulletContent'>{{bulletData.content}}</text></view>
-        <view class='name' wx:else anmation='{{bulletAnimation}}'>{{bulletData.name}}<text class='bulletContent'>{{bulletData.content}}</text></view>
+      <view class='tipView'>欢迎来到播购，广告，不文明内容将被封号哈！(网警24小时巡查)</view>
+      <view wx:for='{{bulletDataRecod}}' wx:for-item='bulletData' wx:key='{{index}}' style='line-height:42rpx;width:500rpx;'>
+        <view class='buyInfo' wx:if="{{bulletData.status == '0'}}" anmation='{{bulletAnimation}}'>{{bulletData.name}}
+          <text class='bulletContent'>{{bulletData.content}}</text>
+        </view>
+        <view class='name' wx:else anmation='{{bulletAnimation}}'>{{bulletData.name}}
+          <text class='bulletContent'>{{bulletData.content}}</text>
+        </view>
       </view>
     </scroll-view>
-    <view class='absoluteView'>
-      <view class='goodSpecial' hidden='{{goodSpecoalHidden}}' bindtap='openGoodList'>
-        <view class='goodWord' >商品专栏</view>
-      </view>
-    </view>
-  </view> 
-  <cover-view class='goodDetail' hidden='{{goodDetailHidden}}' animation ='{{goodDetailAnimation}}'>
- 
+  </view>
+  <cover-view class='goodDetail' hidden='{{goodDetailHidden}}' animation='{{goodDetailAnimation}}'>
     <cover-view class='goodView'>
       <cover-image class='goodImg' src='{{imgurl}}' mode='aspectFit'></cover-image>
       <cover-view class='introView'>
@@ -78,42 +39,27 @@
       <cover-image class='closeDetailWindow' src='{{imageData.closeWindow}}' mode='aspectFit' bindtap='closeDetailWindow'></cover-image>
     </cover-view>
     <cover-view class='size'>
-      <cover-view class='size-tip'>规格</cover-view>
-      <cover-view class='selectButView'>
-         <block wx:for='{{goodParameters}}' wx:for-item='paramitem' wx:key='{{index}}'>
-          <cover-view wx:for='{{paramitem.attrValueList}}'  wx:key='{{index}}'> 
-            <cover-view  class="{{item.selected==1?'butSelected':'butNotSelected'}}" data-selectindex='{{index}}' data-upperid='{{item.attrupperid}}' bindtap='selectOrcancle'>{{item.attrname}}</cover-view>
-          </cover-view> 
-        </block> 
+      <cover-view wx:for='{{goodParameters}}' wx:for-item='paramitem' wx:key='{{index}}'>
+        <cover-view class='size-tip'>{{paramitem.attrname}}</cover-view>
+        <cover-view class='attrView'>
+          <cover-view wx:for='{{paramitem.attrValueList}}' wx:for-item='item' wx:key='{{index}}' class="{{item.selected==1?'butSelected':'butNotSelected'}}" data-selectindex='{{index}}' data-upperid='{{item.attrupperid}}' bindtap='selectOrcancle'>{{item.attrname}}</cover-view>
+        </cover-view>
       </cover-view>
     </cover-view>
     <cover-view class='size'>
       <cover-view class='size-tip'>数量</cover-view>
       <cover-view class='CountView'>
-       <cover-image class='decrease' src='{{imageData.decrease}}' bindtap='decreaseCount'></cover-image>
-       <cover-view class='CountView-Count'>{{goodCount}}</cover-view>
-       <cover-image class='decrease' src='{{imageData.add}}' bindtap='addCount'></cover-image>
-       <cover-image class='caftImg' src='{{imageData.shoppingCart}}' bindtap='gotoCarft'></cover-image>
+        <cover-image class='decrease' src='{{imageData.decrease}}' bindtap='decreaseCount'></cover-image>
+        <cover-view class='CountView-Count'>{{goodCount}}</cover-view>
+        <cover-image class='decrease' src='{{imageData.add}}' bindtap='addCount'></cover-image>
+        <cover-image class='caftImg' src='{{imageData.shoppingCart}}' bindtap='gotoCarft'></cover-image>
       </cover-view>
     </cover-view>
     <cover-view class='buyView'>
       <cover-view class='addToCaft' bindtap='addCart'>加入到购物车</cover-view>
       <cover-view class='buyNow' bindtap='buyNow'>立即购买</cover-view>
-      
+
     </cover-view>
   </cover-view>
-    <view class='oprateView'>
-    <scroll-view class='bulletView' style="{{inputBulletHidden?'':'height:280rpx'}}" scroll-y='true' scroll-top="{{scrollTop}}">
-      <view class='tipView' >欢迎来到播购，广告，不文明内容将被封号哈！(网警24小时巡查)</view>
-      <view  wx:for='{{bulletDataRecod}}' wx:for-item='bulletData' wx:key='{{index}}' style='line-height:42rpx;width:500rpx;'>
-        <view class='buyInfo' wx:if="{{bulletData.status == '0'}}" anmation='{{bulletAnimation}}'>{{bulletData.name}}<text class='bulletContent'>{{bulletData.content}}</text></view>
-        <view class='name' wx:else anmation='{{bulletAnimation}}'>{{bulletData.name}}<text class='bulletContent'>{{bulletData.content}}</text></view>
-      </view>
-    </scroll-view>
-    <!-- 固定在右下角的两个空间 -->
-   
-  </view> 
-  
+
 </view>
-
-

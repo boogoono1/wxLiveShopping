@@ -11,7 +11,7 @@
   width: 100%;
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: 84rpx;
   left: 0;
   right: 0;
   overflow: hidden;
@@ -29,13 +29,18 @@
   position: relative;
   overflow: hidden;
 }
-
 .icon-iconfontjiahao {
   left: 50%;
   font-size: 36rpx;
   color: #fff;
 }
-
+.jia {
+  position: relative;
+  left: 47%;
+  top: 10rpx;
+  color: #333;
+  font-size: 36rpx;
+}
 .userView {
   display: flex;
 }
@@ -327,7 +332,9 @@
   align-items: center;
   bottom: 0rpx;
 }
-
+.submitOrder .fill{
+  height: 68rpx;
+}
 .actMoney {
   margin-right: 10rpx;
   color: #e3656f;
@@ -399,6 +406,10 @@
   height: 188rpx;
   display: flex;
   flex-direction: row;
+}
+
+.no-use {
+  background: #ccc;
 }
 
 .couponitem1 {

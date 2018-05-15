@@ -23,9 +23,6 @@ Page({
    })
   },
   onShow: function () {
-  wx.setNavigationBarTitle({
-    title: '粉钻',
-  });
   wx.setNavigationBarColor({
     frontColor: '#ffffff',
     backgroundColor: '#E3656F',

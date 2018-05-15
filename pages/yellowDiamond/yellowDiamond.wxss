@@ -106,7 +106,7 @@ page {
   height: 80rpx;
   box-sizing: border-box;
   border-radius: 40rpx;
-  border: 1rpx solid #e3656f;
+  border: 2rpx solid #e3656f;
 }
 
 .operation .play-tour {

@@ -1,14 +1,15 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/test/test",
+    "pages/cart/cart",
+    "pages/orderConfirm/orderConfirm",
     "pages/user/user",
     "pages/attention/attention",
-    "pages/orderConfirm/orderConfirm",
     "pages/footprint/footprint",
     "pages/realLive/realLive",
     "pages/liveRoom/liveRoom",
     "pages/anchor/anchor",
-    "pages/cart/cart",
     "pages/order/order",
     "pages/profitDetails/profitDetails",
     "pages/coupon/coupon",
@@ -17,7 +18,9 @@
     "pages/pinkDiamond/pinkDiamond",
     "pages/serviceHelp/serviceHelp",
     "pages/realVideo/realVideo",
-    "pages/recharge/recharge"
+    "pages/recharge/recharge",
+    "pages/orderDetail/orderDetail"
+    
   ],
   "window": {
     "backgroundTextStyle": "dark",
@@ -25,31 +28,5 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "播购直播",
     "navigationBarTextStyle": "black"
-  },
-  "tabBar": {
-    "backgroundColor": "#fff",
-    "color": "#c0c0c9",
-    "selectedColor": "#E46569",
-    "borderStyle": "white",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "iconPath": "./utils/image/home.png",
-        "selectedIconPath": "./utils/image/home-1.png",
-        "text": "首页"
-      },
-      {
-        "pagePath": "pages/anchor/anchor",
-        "iconPath": "./utils/image/live.png",
-        "selectedIconPath": "./utils/image/live-1.png",
-        "text": "主播"
-      },
-      {
-        "pagePath": "pages/user/user",
-        "iconPath": "./utils/image/user.png",
-        "selectedIconPath": "./utils/image/user-1.png",
-        "text": "个人中心"
-      }
-    ]
   }
 }

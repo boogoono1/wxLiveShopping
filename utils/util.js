@@ -4,14 +4,16 @@ import { hexMD5 } from './md5/MD5.js';
 
 const util = {
   imgPath: "http://106.14.221.147:10022/image/",
-  apiPath: "https://xiaochengxu.boogoo.tv",
+  apiPath: "https://xiaochengxu.boogoo.tv:999",
   image(imgName) {
     return this.imgPath + imgName
   },
   getUserid() {
+    return 10470
     return wx.getStorageSync('userid') == '' ? 0 : wx.getStorageSync('userid');
   },
   getToken() {
+    return "8B3D0BBEC8CDE97F3BFCF100A2EACDDC"
     return wx.getStorageSync('token') == '' ? 0 : wx.getStorageSync('token');
   },
   base64(code) {
@@ -102,9 +104,19 @@ const util = {
     for (let item in objectData) {
       urlText += '&' + item + '=' + objectData[item];
     }
-    wx.navigateTo({
-      url: urlText
-    })
+
+    let urlPage = ['index', 'user', 'anchor'];
+
+    if (urlPage.indexOf(url) > -1) {
+      wx.reLaunch({
+        url: urlText
+      })
+    }
+    else {
+      wx.navigateTo({
+        url: urlText
+      })
+    }
   },
   get(url, getData) {
     getData.userid = this.getUserid();

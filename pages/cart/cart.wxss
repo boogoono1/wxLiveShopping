@@ -5,17 +5,17 @@ page {
 }
 
 .container {
-  margin-top: -100rpx;
-  margin-bottom: 120rpx;
+  margin-bottom: 20rpx;
 }
 
 .container:first-child {
   margin-top: 20rpx;
 }
 
+/* 
 .margin {
   margin-bottom: 100rpx;
-}
+} */
 
 .header {
   height: 110rpx;
@@ -86,20 +86,27 @@ page {
   height: 120rpx;
 }
 
-.goods-item-box .select {
+.goods-item-box .select-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120rpx;
+}
+
+.goods-item-box .select-box .select {
   position: relative;
   width: 32rpx;
   height: 32rpx;
   margin-right: 18rpx;
 }
 
-.goods-item-box .select image {
+.goods-item-box .select-box .select image {
   position: absolute;
   width: 32rpx;
   height: 32rpx;
 }
 
-.goods-item-box .goods {
+.goods-item-box  .goods {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -205,8 +212,6 @@ page {
 .footer {
   position: fixed;
   display: flex;
-  align-items: center;
-  bottom: 0;
   width: 750rpx;
   height: 100rpx;
   background-color: #fff;
@@ -459,7 +464,10 @@ page {
   justify-content: center;
   align-items: center;
 }
-.noCart{
+.color-module .fill{
+  height: 68rpx;
+}
+.noCart {
   position: absolute;
   display: flex;
   align-items: center;
@@ -470,12 +478,23 @@ page {
   right: 0;
   margin: auto;
 }
-.noCart image{
+
+.noCart image {
   width: 352rpx;
   height: 220rpx;
 }
-.noCart .no-text{
+
+.noCart .no-text {
   margin-top: 60rpx;
   font-size: 28rpx;
   color: #666;
+}
+
+.load {
+  color: #333;
+  font-size: 28rpx;
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

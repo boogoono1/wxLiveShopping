@@ -7,15 +7,26 @@ Page({
      anchorArr:[],
      height:0,
      pageindex:1,
-     currentLoading: false
+     isFill: false,
+     currentLoading: false,
+     tabbarImg: {
+       tab1: util.image('home.png'),
+       tab2: util.image('live-1.png'),
+       tab3: util.image('Mycenter_1.png'),
+     }
   },
-
+ toIndex(){
+   util.pageJump('index')
+ },
+ toUser(){
+   util.pageJump('user')
+ },
   toJump(e){
     util.pageJump('liveRoom',{
       anchorid: e.currentTarget.dataset.id
     })
   },
-  lower(){
+  onReachBottom(){
     this.data.pageindex++;
     this.getData(this.data.pageindex);
     this.setData({
@@ -23,20 +34,15 @@ Page({
     })
   },
   onLoad(){
+    if (app.globalData.isIphoneX) {
+      this.setData({
+        isFill: true
+      })
+    }
     this.setData({
       height: app.globalData.height
     })
-  },
-  onHide(){
-    this.setData({
-      anchorArr:[],
-      pageindex: 1,
-      currentLoading: false
-    })
-  },
-  onShow: function () {
-   this.getData();
-    
+    this.getData();
   },
   getData(pageindex){
     util.get('/api/Anchor/AnchorArea',{
@@ -53,6 +59,9 @@ Page({
         if(res.data.data.length==0){
           this.setData({
             currentLoading:true
+          })
+          util.showToast({
+            title: "已经看到最后啦"
           })
         }
       }

@@ -204,6 +204,8 @@ swiper{
   align-items: center;
   flex-direction: column;
   top: 30%;
+  font-size: 28rpx;
+  color: #333;
   left: 0;
   bottom: 0;
   right: 0;
